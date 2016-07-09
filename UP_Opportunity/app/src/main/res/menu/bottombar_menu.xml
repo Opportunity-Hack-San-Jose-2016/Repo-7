@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/bottomBarItemOne"
+        android:icon="@android:drawable/ic_input_add"
+        android:title="Recents" />
+    <item
+        android:id="@+id/bottomBarItemTwo"
+        android:icon="@android:drawable/ic_input_add"
+        android:title="Recents" />
+    <item
+        android:id="@+id/bottomBarItemThree"
+        android:icon="@android:drawable/ic_input_add"
+        android:title="Recents" />
+    <item
+        android:id="@+id/bottomBarItemFour"
+        android:icon="@android:drawable/ic_input_add"
+        android:title="Recents" />
+</menu>
