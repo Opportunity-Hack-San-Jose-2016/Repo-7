@@ -33,8 +33,9 @@ public class MainActivity extends AppCompatActivity {
 
         bottomBarClickListener(bottomBar);
 
-
     }
+
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
