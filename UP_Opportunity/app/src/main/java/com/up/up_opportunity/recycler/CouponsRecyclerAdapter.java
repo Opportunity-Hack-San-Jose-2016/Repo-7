@@ -1,25 +1,29 @@
 package com.up.up_opportunity.recycler;
 
 import android.content.Context;
+import android.support.v7.widget.*;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.up.up_opportunity.R;
+import com.up.up_opportunity.model.coupons.Coupons;
+import com.up.up_opportunity.model.coupons.CouponsArray;
 
 import java.util.ArrayList;
 
 /**
  * Created by Billy on 7/9/16.
  */
-public class RecyclerView extends android.support.v7.widget.RecyclerView.Adapter<RecyclerView.RecyclerViewHolder> {
+public class CouponsRecyclerAdapter extends android.support.v7.widget.RecyclerView.Adapter<CouponsRecyclerAdapter.RecyclerViewHolder> {
 
-    private ArrayList<String> data;
+    private CouponsArray data;
     private Context context;
 
-    public RecyclerView(ArrayList<String> data) {
+    public CouponsRecyclerAdapter(CouponsArray data) {
         this.data = data;
     }
 
@@ -39,21 +43,22 @@ public class RecyclerView extends android.support.v7.widget.RecyclerView.Adapter
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
-//        holder.title.setText(data.get(position).getTitle());
-//        String imageURI = data.get(position).getImage();
-//
-//        if (imageURI.isEmpty()) {
-//            imageURI = "R.drawable.blank_white.png";
-//        }
-//
-//        Glide
-//                .with(context)
-//                .load("https://webknox.com/recipeImages/"+ imageURI)
-//                .centerCrop()
-//                .placeholder(R.drawable.blank_white)
-//                .crossFade()
-//                .override(150,150)
-//                .into(holder.imageView);
+        holder.title.setText(data.getCoupons().get(position).getDealTitle());
+        String imageURI = data.getCoupons().get(position).getShowImageStandardBig();
+        holder.info.setVisibility(View.GONE);
+
+        if (imageURI.isEmpty()) {
+            imageURI = "R.drawable.blank_white.png";
+        }
+
+        Glide
+                .with(context)
+                .load(imageURI)
+                .centerCrop()
+                .placeholder(R.drawable.blank_white)
+                .crossFade()
+                .override(150,150)
+                .into(holder.imageView);
 
     }
 
@@ -70,7 +75,7 @@ public class RecyclerView extends android.support.v7.widget.RecyclerView.Adapter
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return data.getCoupons().size();
     }
 
 
