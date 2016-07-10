@@ -45,6 +45,8 @@ public class EventsFragment extends android.support.v4.app.Fragment {
         return v;
     }
 
+
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -117,4 +119,5 @@ public class EventsFragment extends android.support.v4.app.Fragment {
 
 
     }
+
 }
