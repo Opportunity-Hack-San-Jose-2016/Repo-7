@@ -23,9 +23,7 @@
             android:layout_gravity="center_vertical"
             android:scaleType="fitXY"
             android:paddingRight="8dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:src="@drawable/ic_card_travel_black_24dp"/>
-
+            android:src="@mipmap/find_house"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,73 +39,79 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
-                    android:text="Title: "/>
-
+                    android:text="Agency: "/>
 
                 <TextView
-                    android:id="@+id/housing_title_textView"
+                    android:id="@+id/housing_agency_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     />
 
             </LinearLayout>
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="Company: "/>
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/housing_company_textView"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Location: "/>
+
+                    <TextView
+                        android:id="@+id/housing_address_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    />
-            </LinearLayout>
+                    android:orientation="horizontal">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="City: "/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/housing_city_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="Location: "/>
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/housing_location_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Phone: "/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/housing_phone_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="Posted: "/>
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/housing_posted_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
             </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
-
 </android.support.v7.widget.CardView>

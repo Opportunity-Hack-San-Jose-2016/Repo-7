@@ -41,9 +41,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class HousingFragment extends android.support.v4.app.Fragment implements HousingRVAdapter.HousingClickListener {
 
     private static final String TAG = "HOUSING_FRAGMENT";
-    private Button submitButton;
-    private EditText cityEditText;
-    private EditText housingTitleEditText;
     private RecyclerView housingRecyclerView;
     private SwipeRefreshLayout housingSwipeRefreshLayout;
     private HousingHUD housingHUD;
@@ -61,8 +58,6 @@ public class HousingFragment extends android.support.v4.app.Fragment implements 
         setRetainInstance(true);
         Log.d(TAG, "HousingFragment: OnCreateView");
 
-        cityEditText = (EditText)view.findViewById(R.id.housing_city_editText);
-        housingTitleEditText = (EditText)view.findViewById(R.id.housing_title_editText);
         housingRecyclerView = (RecyclerView)view.findViewById(R.id.housing_recyclerView);
         housingSwipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.housing_swipeRefreshLayout);
         linearLayoutManager = new LinearLayoutManager(getContext());
@@ -82,6 +77,7 @@ public class HousingFragment extends android.support.v4.app.Fragment implements 
         }
 
         swipeHousingRefreshListener();
+        housingApiCall();
 
         return view;
     }
@@ -113,17 +109,6 @@ public class HousingFragment extends android.support.v4.app.Fragment implements 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "onViewCreated: ");
-
-
-        submitButton = (Button)view.findViewById(R.id.housing_fragment_submit_button);
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "HOUSING FRAGMENT submit Button Clicked");
-                housingApiCall();
-            }
-        });
     }
 
     private void housingApiCall(){
@@ -195,9 +180,13 @@ public class HousingFragment extends android.support.v4.app.Fragment implements 
 
     @Override
     public void onCardViewClick(String link) {
+        if(link == null || link.equals("n/a")){
+            return;
+        }
         Intent intent = new Intent(getActivity(), JobWebViewActivity.class);
         intent.putExtra("link", link);
         startActivity(intent);
-        Log.d(TAG, "HousingFragment: Card Clicked: " + link);
+
+        Log.i(TAG, "HousingFragment: Card Clicked: " + link);
     }
 }
