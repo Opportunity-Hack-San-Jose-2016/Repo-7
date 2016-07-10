@@ -42,6 +42,8 @@ public class EventsFragment extends android.support.v4.app.Fragment {
         View v = inflater.inflate(R.layout.fragment_events, container, false);
         setRetainInstance(true);
         recyclerView = (RecyclerView) v.findViewById(R.id.list_recyclerView_event);
+
+
         return v;
     }
 
