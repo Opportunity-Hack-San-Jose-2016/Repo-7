@@ -54,7 +54,7 @@ public class GoogleEventsRecyclerView extends android.support.v7.widget.Recycler
         holder.imageView.setImageResource(R.drawable.ic_map_black_24dp);
         holder.imageView.setColorFilter(color);
 
-        Log.d("RV Adapter", "Events Size: " + data.getResults().size());
+       // Log.d("RV Adapter", "Events Size: " + data.getResults().size());
 //        String imageURI = data.getResults().get(position).getIcon();
 //
 //        if (imageURI.isEmpty()) {
