@@ -16,7 +16,7 @@ import com.roughike.bottombar.OnMenuTabClickListener;
 import com.up.up_opportunity.fragments.CouponFragment;
 import com.up.up_opportunity.fragments.EventsFragment;
 import com.up.up_opportunity.fragments.HelpFragment;
-import com.up.up_opportunity.fragments.JobsFragment;
+import com.up.up_opportunity.fragments.jobs.JobsFragment;
 import com.up.up_opportunity.fragments.LogoFragment;
 
 public class MainActivity extends AppCompatActivity {
