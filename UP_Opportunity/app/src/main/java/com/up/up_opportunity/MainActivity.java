@@ -20,7 +20,7 @@ import com.up.up_opportunity.fragments.FoodBankFragment;
 import com.up.up_opportunity.fragments.ForumFragment;
 import com.up.up_opportunity.fragments.HelpFragment;
 import com.up.up_opportunity.fragments.jobs.JobsFragment;
-import com.up.up_opportunity.fragments.HousingFragment;
+import com.up.up_opportunity.fragments.housing.HousingFragment;
 import com.up.up_opportunity.fragments.LogoFragment;
 
 public class MainActivity extends AppCompatActivity implements HelpFragment.OnForumClickListener, HelpFragment.OnHousingClickListener, HelpFragment.OnFoodBankClickListener {
