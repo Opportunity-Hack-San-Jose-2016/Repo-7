@@ -48,10 +48,11 @@ public class FoodBankAdapter extends RecyclerView.Adapter<FoodBankAdapter.ViewHo
         holder.numberTV.setText(foodBank.displayPhone());
         holder.addressTV.setText(foodBank.location().address().toString().substring(1,foodBank.location().address().toString().length()-1)
                 +", "+foodBank.location().city()+", "+foodBank.location().stateCode());
-        Picasso.with(context)
-                .load(foodBank.imageUrl().replaceAll("ms", "ls"))
-                .into(holder.imageIV);
-
+        if (foodBank.imageUrl()!=null) {
+            Picasso.with(context)
+                    .load(foodBank.imageUrl().replaceAll("ms", "ls"))
+                    .into(holder.imageIV);
+        }
     }
 
     @Override

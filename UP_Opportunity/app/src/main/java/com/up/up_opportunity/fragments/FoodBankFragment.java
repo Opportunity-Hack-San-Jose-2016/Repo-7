@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.up.up_opportunity.FoodBankAdapter;
 import com.up.up_opportunity.R;
@@ -34,12 +36,16 @@ public class FoodBankFragment extends Fragment {
     private ArrayList<Business> foodBanks;
     private FoodBankAdapter foodBankAdapter;
     private RecyclerView foodBankRV;
+    private EditText locationET;
+    private Button submitButton;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_foodbank,container,false);
         foodBankRV = (RecyclerView)view.findViewById(R.id.foodbank_RV);
+        locationET = (EditText)view.findViewById(R.id.foodbank_location_editText);
+        submitButton = (Button)view.findViewById(R.id.foodbank_submit_button);
         return view;
     }
 
@@ -47,9 +53,19 @@ public class FoodBankFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "onViewCreated: ");
+        setSubmitListener();
         makeRVAdapter();
         manageYelpApi();
 
+    }
+
+    private void setSubmitListener(){
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (locationET.getText().toString()!="")manageYelpApi();
+            }
+        });
     }
 
     private void makeRVAdapter(){
@@ -68,11 +84,12 @@ public class FoodBankFragment extends Fragment {
 
         params.put("term", "food bank");
 
-        Call<SearchResponse> call = yelpAPI.search("San Jose", params);
+        Call<SearchResponse> call = yelpAPI.search(locationET.getText().toString(), params);
         call.enqueue(new Callback<SearchResponse>() {
             @Override
             public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {
                 ArrayList<Business> responseList = response.body().businesses();
+                foodBanks.clear();
                 foodBanks.addAll(responseList);
                 foodBankAdapter.notifyDataSetChanged();
             }
