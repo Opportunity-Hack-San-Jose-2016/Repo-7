@@ -6,6 +6,7 @@
     android:layout_marginBottom="4dp">
 
     <ImageView
+        android:gravity="center"
         android:id="@+id/imageOne_id"
         android:layout_width="75dp"
         android:layout_height="75dp"
