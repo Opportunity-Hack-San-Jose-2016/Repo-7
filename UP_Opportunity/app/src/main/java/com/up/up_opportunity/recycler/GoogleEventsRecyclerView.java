@@ -1,6 +1,8 @@
 package com.up.up_opportunity.recycler;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,18 +10,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.up.up_opportunity.R;
+import com.up.up_opportunity.model.event.GoogleEvent;
 
 import java.util.ArrayList;
 
 /**
  * Created by Billy on 7/9/16.
  */
-public class RecyclerView extends android.support.v7.widget.RecyclerView.Adapter<RecyclerView.RecyclerViewHolder> {
+public class GoogleEventsRecyclerView extends android.support.v7.widget.RecyclerView.Adapter<GoogleEventsRecyclerView.RecyclerViewHolder> {
 
-    private ArrayList<String> data;
+    private GoogleEvent data;
     private Context context;
 
-    public RecyclerView(ArrayList<String> data) {
+    public GoogleEventsRecyclerView(GoogleEvent data) {
         this.data = data;
     }
 
@@ -38,8 +41,16 @@ public class RecyclerView extends android.support.v7.widget.RecyclerView.Adapter
     }
 
     @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
-//        holder.title.setText(data.get(position).getTitle());
+        holder.title.setText(data.getResults().get(position).getName());
+        holder.info.setText(data.getResults().get(position).getVicinity());
+
+        Log.d("RV Adapter", "Events Size: " + data.getResults().size());
 //        String imageURI = data.get(position).getImage();
 //
 //        if (imageURI.isEmpty()) {
@@ -54,6 +65,7 @@ public class RecyclerView extends android.support.v7.widget.RecyclerView.Adapter
 //                .crossFade()
 //                .override(150,150)
 //                .into(holder.imageView);
+
 
     }
 
@@ -70,7 +82,7 @@ public class RecyclerView extends android.support.v7.widget.RecyclerView.Adapter
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return data.getResults().size();
     }
 
 

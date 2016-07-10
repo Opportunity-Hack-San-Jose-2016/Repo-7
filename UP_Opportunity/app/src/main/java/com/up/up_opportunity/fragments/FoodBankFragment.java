@@ -80,6 +80,7 @@ public class FoodBankFragment extends Fragment {
             @Override
             public void onFailure(Call<SearchResponse> call, Throwable t) {
 
+
             }
         });
     }

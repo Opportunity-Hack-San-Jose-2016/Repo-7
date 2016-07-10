@@ -17,7 +17,12 @@ import com.up.up_opportunity.model.event.GoogleEvent;
 import com.up.up_opportunity.model.job.Indeed;
 import com.up.up_opportunity.providers.EventApi;
 import com.up.up_opportunity.providers.IndeedService;
+import com.up.up_opportunity.recycler.GoogleEventsRecyclerView;
+import com.yelp.clientlib.entities.Business;
+
 import android.support.v7.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -32,9 +37,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class EventsFragment extends android.support.v4.app.Fragment {
 
+
     private static final String TAG = "EVENTS_FRAGMENT";
     Button submitButton;
     RecyclerView recyclerView;
+    GoogleEventsRecyclerView recyclerViewAdapter;
+    private GoogleEvent googleEvent;
+
 
     @Nullable
     @Override
@@ -44,18 +53,14 @@ public class EventsFragment extends android.support.v4.app.Fragment {
         recyclerView = (RecyclerView) v.findViewById(R.id.list_recyclerView_event);
 
 
+
         return v;
     }
-
-
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "onViewCreated: ");
-
-
-
 
         submitButton = (Button)view.findViewById(R.id.eventButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -99,13 +104,19 @@ public class EventsFragment extends android.support.v4.app.Fragment {
                     @Override
                     public void onResponse(Call<GoogleEvent> call, Response<GoogleEvent> response) {
                         if(response.isSuccessful()){
-                            GoogleEvent googleEvent = response.body();
+                            googleEvent = response.body();
                             Double lat = googleEvent.getResults().get(0).getGeometry().getLocation().getLat();
                             String name = googleEvent.getResults().get(0).getName();
                             String vicinity = googleEvent.getResults().get(0).getVicinity();
+                            int size = googleEvent.getResults().size();
                             Log.d(TAG, "Event Name: " + name);
                             Log.d(TAG, "Event Name: " + vicinity);
                             Log.d(TAG, "Event Name: " + lat);
+                            Log.d(TAG, "Size: " + size);
+                            recyclerViewAdapter = new GoogleEventsRecyclerView(googleEvent);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                            recyclerView.setAdapter(recyclerViewAdapter);
+//                            recyclerViewAdapter.notifyDataSetChanged();
                         }
                     }
 
