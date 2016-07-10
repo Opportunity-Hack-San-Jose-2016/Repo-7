@@ -214,4 +214,9 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
         fragmentTransaction.replace(R.id.frag_container_id,housingFragment);
         fragmentTransaction.commit();
     }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+    }
 }
