@@ -3,6 +3,7 @@ package com.up.up_opportunity.fragments.housing;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,20 +33,18 @@ public class HousingRVAdapter extends RecyclerView.Adapter<HousingRVAdapter.Hous
     public static class HousingViewHolder extends RecyclerView.ViewHolder{
 
         CardView jobCardView;
-        TextView titleTextView;
-        TextView companyTextView;
-        TextView locationTextView;
-        TextView postedTextView;
-        ImageView jobImageView;
+        TextView houseAddress;
+        TextView cityTextView;
+        TextView agencyTextView;
+        TextView phoneTextView;
 
         public HousingViewHolder(View itemView) {
             super(itemView);
             jobCardView = (CardView)itemView.findViewById(R.id.job_cardView);
-            titleTextView = (TextView)itemView.findViewById(R.id.job_title_textView);
-            companyTextView = (TextView)itemView.findViewById(R.id.job_company_textView);
-            locationTextView = (TextView)itemView.findViewById(R.id.job_location_textView);
-            postedTextView = (TextView)itemView.findViewById(R.id.job_posted_textView);
-            jobImageView = (ImageView)itemView.findViewById(R.id.job_imageView);
+            houseAddress = (TextView)itemView.findViewById(R.id.housing_address_textView);
+            cityTextView = (TextView)itemView.findViewById(R.id.housing_city_textView);
+            agencyTextView = (TextView)itemView.findViewById(R.id.housing_agency_textView);
+            phoneTextView = (TextView)itemView.findViewById(R.id.housing_phone_textView);
 
         }
 
@@ -72,7 +71,7 @@ public class HousingRVAdapter extends RecyclerView.Adapter<HousingRVAdapter.Hous
 
     @Override
     public HousingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_jobs, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_housing, parent, false);
         HousingViewHolder housingViewHolder = new HousingViewHolder(view);
 
         color = ContextCompat.getColor(parent.getContext(), R.color.colorPrimary);
@@ -84,14 +83,13 @@ public class HousingRVAdapter extends RecyclerView.Adapter<HousingRVAdapter.Hous
     @Override
     public void onBindViewHolder(HousingViewHolder holder, int position) {
 
-        holder.titleTextView.setText(results.getHousing().get(position).getAgc_ADDR_LATITUDE());
-        holder.companyTextView.setText(results.getHousing().get(position).getAdr2());
-        holder.locationTextView.setText(results.getHousing().get(position).getAdr1());
-        holder.postedTextView.setText(results.getHousing().get(position).getCity());
-        holder.jobImageView.setImageResource(R.drawable.ic_card_travel_black_24dp);
-        holder.jobImageView.setColorFilter(color);
+        holder.cityTextView.setText(results.getHousing().get(position).getCity());
+        holder.houseAddress.setText(results.getHousing().get(position).getAdr1());
+        holder.agencyTextView.setText(results.getHousing().get(position).getNme());
+        holder.phoneTextView.setText(results.getHousing().get(position).getPhone1());
 
         final String url = results.getHousing().get(position).getWeburl();
+        Log.i(TAG,"Clicked URL" + url);
         holder.bind(housingClickListener, url);
 
     }
