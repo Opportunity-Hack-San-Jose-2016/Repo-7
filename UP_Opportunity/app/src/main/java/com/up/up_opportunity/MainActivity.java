@@ -20,8 +20,8 @@ import com.up.up_opportunity.fragments.EventsFragment;
 import com.up.up_opportunity.fragments.FoodBankFragment;
 import com.up.up_opportunity.fragments.ForumFragment;
 import com.up.up_opportunity.fragments.HelpFragment;
+import com.up.up_opportunity.fragments.jobs.JobsFragment;
 import com.up.up_opportunity.fragments.HousingFragment;
-import com.up.up_opportunity.fragments.JobsFragment;
 import com.up.up_opportunity.fragments.LogoFragment;
 
 public class MainActivity extends AppCompatActivity implements HelpFragment.OnForumClickListener, HelpFragment.OnHousingClickListener, HelpFragment.OnFoodBankClickListener {
@@ -65,7 +65,9 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
 
     private void initViews(){
         toolbar = (Toolbar)findViewById(R.id.home_toolBar);
+
 //        logo = (ImageView)findViewById(R.id.logo_id);
+
     }
 
     private void initActionBar(){
@@ -99,9 +101,11 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
 
     }
 
+
 //    private void turnOffLogo(){
 //        logo.setVisibility(View.GONE);
 //    }
+
 
 
     private void bottomBarClickListener(BottomBar bottomBar){
@@ -117,19 +121,25 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
                         Log.d(TAG, "HELP");
                         break;
                     case R.id.bottomBarItemTwo:
+
 //                        turnOffLogo();
+
                         fragmentTransaction.replace(R.id.frag_container_id,jobsFragment);
                         fragmentTransaction.commit();
                         Log.d(TAG, "JOBS");
                         break;
                     case R.id.bottomBarItemThree:
+
 //                        turnOffLogo();
+
                         fragmentTransaction.replace(R.id.frag_container_id,eventsFragment);
                         fragmentTransaction.commit();
                         Log.d(TAG, "EVENTS");
                         break;
                     case R.id.bottomBarItemFour:
+
 //                        turnOffLogo();
+
                         fragmentTransaction.replace(R.id.frag_container_id,couponFragment);
                         fragmentTransaction.commit();
                         Log.d(TAG, "DISCOUNTS");

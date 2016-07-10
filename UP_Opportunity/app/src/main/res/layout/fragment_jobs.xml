@@ -4,13 +4,32 @@
     android:layout_height="match_parent"
     android:layout_marginTop="?android:attr/actionBarSize">
 
+    <EditText
+        android:id="@+id/job_city_editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="San Jose"
+        android:hint="City"/>
+
+    <EditText
+        android:id="@+id/job_title_editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="cashier"
+        android:hint="Job Title"/>
 
     <Button
         android:id="@+id/job_fragment_submit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:text="Submit"/>
+        android:text="Search"/>
 
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/job_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>
