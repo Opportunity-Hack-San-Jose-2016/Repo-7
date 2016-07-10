@@ -3,8 +3,10 @@ package com.up.up_opportunity.fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -53,9 +55,7 @@ public class CouponFragment extends Fragment {
     private String orderBy = "radius";
     private String category = "2,6";
     SharedPreferences sharedPreferences;
-
-
-
+    private SwipeRefreshLayout couponSwipeRefreshLayout;
 
     
     @Nullable
@@ -65,6 +65,10 @@ public class CouponFragment extends Fragment {
         setRetainInstance(true);
         recyclerView = (RecyclerView) v.findViewById(R.id.coupon_recycler_id);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        couponSwipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.coupon_swipeRefreshLayout);
+        couponSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryLight, R.color.colorAccent, R.color.colorPrimary);
+
         sharedPreferences = getActivity().getSharedPreferences("COUPONS", Context.MODE_PRIVATE);
 
         Gson gson = new Gson();
@@ -79,10 +83,34 @@ public class CouponFragment extends Fragment {
             retrofit();
         }
 
-
+        swipeCouponRefreshListener();
 
         return v;
     }
+
+    private void swipeCouponRefreshListener(){
+        couponSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshCouponContent();
+            }
+        });
+    }
+
+    /**
+     * Pull down to refresh will make new API call
+     */
+    private void refreshCouponContent(){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                retrofit();
+                couponSwipeRefreshLayout.setRefreshing(false);
+            }
+        }, 0);
+    }
+
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
