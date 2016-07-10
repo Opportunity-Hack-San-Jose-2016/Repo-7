@@ -89,7 +89,7 @@ public class HousingRVAdapter extends RecyclerView.Adapter<HousingRVAdapter.Hous
         holder.phoneTextView.setText(results.getHousing().get(position).getPhone1());
 
         final String url = results.getHousing().get(position).getWeburl();
-        Log.i(TAG,"Clicked URL" + url);
+       // Log.i(TAG,"Clicked URL" + url);
         holder.bind(housingClickListener, url);
 
     }

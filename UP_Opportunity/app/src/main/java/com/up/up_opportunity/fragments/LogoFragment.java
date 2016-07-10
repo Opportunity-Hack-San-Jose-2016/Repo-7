@@ -27,6 +27,6 @@ public class LogoFragment extends android.support.v4.app.Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "onViewCreated: ");
+       // Log.i(TAG, "onViewCreated: ");
     }
 }

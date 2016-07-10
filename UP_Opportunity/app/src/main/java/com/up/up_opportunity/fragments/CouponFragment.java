@@ -187,6 +187,6 @@ public class CouponFragment extends Fragment implements CouponsRecyclerAdapter.C
         Intent intent = new Intent(getActivity(), JobWebViewActivity.class);
         intent.putExtra("link", link);
         startActivity(intent);
-        Log.d(TAG, "CouponFragment: Card Clicked: " + link);
+        //Log.d(TAG, "CouponFragment: Card Clicked: " + link);
     }
 }

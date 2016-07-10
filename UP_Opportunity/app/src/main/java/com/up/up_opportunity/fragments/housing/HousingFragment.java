@@ -56,7 +56,7 @@ public class HousingFragment extends android.support.v4.app.Fragment implements 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_housing,container,false);
         setRetainInstance(true);
-        Log.d(TAG, "HousingFragment: OnCreateView");
+        //Log.d(TAG, "HousingFragment: OnCreateView");
 
         housingRecyclerView = (RecyclerView)view.findViewById(R.id.housing_recyclerView);
         housingSwipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.housing_swipeRefreshLayout);
@@ -86,7 +86,7 @@ public class HousingFragment extends android.support.v4.app.Fragment implements 
         housingSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Log.d(TAG, "HOUSING FRAGMENT: onRefresh");
+                //Log.d(TAG, "HOUSING FRAGMENT: onRefresh");
                 refreshHousingContent();
             }
         });
@@ -113,7 +113,7 @@ public class HousingFragment extends android.support.v4.app.Fragment implements 
 
     private void housingApiCall(){
 
-        Log.d(TAG, "HOUSING API CALL");
+        //Log.d(TAG, "HOUSING API CALL");
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
@@ -187,6 +187,6 @@ public class HousingFragment extends android.support.v4.app.Fragment implements 
         intent.putExtra("link", link);
         startActivity(intent);
 
-        Log.i(TAG, "HousingFragment: Card Clicked: " + link);
+       // Log.i(TAG, "HousingFragment: Card Clicked: " + link);
     }
 }
