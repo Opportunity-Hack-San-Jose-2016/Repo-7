@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "com.up.up_opportunity"
         minSdkVersion 19
-        targetSdkVersion 24
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }

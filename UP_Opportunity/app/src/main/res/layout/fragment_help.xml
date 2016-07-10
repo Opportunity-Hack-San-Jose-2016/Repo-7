@@ -6,28 +6,38 @@
     android:layout_marginTop="?attr/actionBarSize">
 
     <Button
-        android:layout_marginTop="18dp"
+        android:elevation="16dp"
+        android:layout_marginTop="55dp"
         android:id="@+id/help_foodbank_button_id"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@mipmap/food_banks"
+        android:layout_gravity="center_horizontal|top" />
+
+    <LinearLayout
+        android:layout_marginTop="32dp"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:textSize="20sp"
-        android:text="Find a Foodbank"/>
+        android:layout_height="match_parent">
 
     <Button
-
-        android:layout_marginTop="18dp"
-        android:id="@+id/help_housing_id"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:textSize="20sp"
-        android:text="Find Housing"/>
-
-    <Button
-        android:layout_marginTop="18dp"
+        android:elevation="16dp"
+        android:layout_marginStart="18dp"
+        android:gravity="top"
         android:id="@+id/help_forum_button_id"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:textSize="20sp"
-        android:text="Have any Questions?"/>
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@mipmap/have_question"
+        />
 
+    <Button
+        android:elevation="16dp"
+        android:layout_marginStart="30dp"
+        android:gravity="end"
+        android:id="@+id/help_housing_id"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@mipmap/find_house"
+         />
+    </LinearLayout>
 </LinearLayout>

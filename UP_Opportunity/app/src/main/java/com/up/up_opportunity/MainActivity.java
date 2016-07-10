@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
 //    private void turnOffLogo(){
 //        logo.setVisibility(View.GONE);
 //    }
-    
+
     private void bottomBarClickListener(BottomBar bottomBar){
         bottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
             @Override
@@ -116,18 +116,22 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
                         fragmentTransaction.replace(R.id.frag_container_id,helpFragment);
                         fragmentTransaction.commit();
                         toolbar.setTitle("Help");
+                        toolbar.setTitleTextColor(getColor(R.color.white));
                         break;
                     case R.id.bottomBarItemTwo:
 //                        turnOffLogo();
                         fragmentTransaction.replace(R.id.frag_container_id,jobsFragment);
                         fragmentTransaction.commit();
                         toolbar.setTitle("Jobs");
+                        toolbar.setTitleTextColor(getColor(R.color.white));
+
                         break;
                     case R.id.bottomBarItemThree:
 //                        turnOffLogo();
                         fragmentTransaction.replace(R.id.frag_container_id,eventsFragment);
                         fragmentTransaction.commit();
                         toolbar.setTitle("Events & Activities");
+                        toolbar.setTitleTextColor(getColor(R.color.white));
 
                         break;
                     case R.id.bottomBarItemFour:
@@ -135,6 +139,8 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
                         fragmentTransaction.replace(R.id.frag_container_id,couponFragment);
                         fragmentTransaction.commit();
                         toolbar.setTitle("Coupons & Discounts");
+                        toolbar.setTitleTextColor(getColor(R.color.white));
+
                         break;
                     default:
                         Log.d(TAG, "None");
