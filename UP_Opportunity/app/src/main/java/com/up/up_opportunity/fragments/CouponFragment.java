@@ -1,6 +1,7 @@
 package com.up.up_opportunity.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.up.up_opportunity.JobWebViewActivity;
 import com.up.up_opportunity.R;
 import com.up.up_opportunity.fragments.jobs.JobsRVAdapter;
 import com.up.up_opportunity.keys.keys;
@@ -41,7 +43,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by Billy on 7/9/16.
  */
-public class CouponFragment extends Fragment {
+public class CouponFragment extends Fragment implements CouponsRecyclerAdapter.CouponClickListener{
 
     private static final String TAG = "COUPON_FRAGMENT";
     private CouponService couponService;
@@ -77,7 +79,7 @@ public class CouponFragment extends Fragment {
             CouponsArray couponsData = gson.fromJson(json, CouponsArray.class);
             //jobRecyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            couponsRecyclerAdapter = new CouponsRecyclerAdapter(couponsData);
+            couponsRecyclerAdapter = new CouponsRecyclerAdapter(this, couponsData);
             recyclerView.setAdapter(couponsRecyclerAdapter);
         }else{
             retrofit();
@@ -152,7 +154,7 @@ public class CouponFragment extends Fragment {
                         return;
                     }
 
-                    couponsRecyclerAdapter = new CouponsRecyclerAdapter(couponsData);
+                    couponsRecyclerAdapter = new CouponsRecyclerAdapter(CouponFragment.this, couponsData);
                     recyclerView.setAdapter(couponsRecyclerAdapter);
                     couponsRecyclerAdapter.notifyDataSetChanged();
                     //Collections.addAll(couponsList, couponsData);
@@ -178,5 +180,13 @@ public class CouponFragment extends Fragment {
                 t.printStackTrace();
             }
         });
+    }
+
+    @Override
+    public void onCardViewClick(String link) {
+        Intent intent = new Intent(getActivity(), JobWebViewActivity.class);
+        intent.putExtra("link", link);
+        startActivity(intent);
+        Log.d(TAG, "CouponFragment: Card Clicked: " + link);
     }
 }
