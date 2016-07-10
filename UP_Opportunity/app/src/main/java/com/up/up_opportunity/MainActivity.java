@@ -193,6 +193,7 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
     @Override
     public void onFoodBankClicked() {
         initFragManager();
+        toolbar.setTitle("Food Bank");
         FoodBankFragment foodBankFragment = new FoodBankFragment();
         fragmentTransaction.replace(R.id.frag_container_id,foodBankFragment);
         fragmentTransaction.commit();
@@ -201,6 +202,8 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
     @Override
     public void onForumClicked() {
         initFragManager();
+
+        toolbar.setTitle("Q&A Forum");
         ForumFragment forumFragment = new ForumFragment();
         fragmentTransaction.replace(R.id.frag_container_id,forumFragment);
         fragmentTransaction.commit();
@@ -209,6 +212,7 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
     @Override
     public void onHousingClicked() {
         initFragManager();
+        toolbar.setTitle("Housing Agencies");
         HousingFragment housingFragment = new HousingFragment();
         fragmentTransaction.replace(R.id.frag_container_id,housingFragment);
         fragmentTransaction.commit();
