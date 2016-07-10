@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:layout_marginTop="50dp">
+    
+    <Button
+        android:id="@+id/help_foodbank_button_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Find a Foodbank"/>
+    <Button
+        android:id="@+id/help_housing_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Find Housing"/>
+    <Button
+        android:id="@+id/help_forum_button_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Have any Questions?"/>
+</LinearLayout>
