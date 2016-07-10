@@ -13,8 +13,8 @@ import com.up.up_opportunity.R;
 /**
  * Created by adao1 on 7/9/2016.
  */
-public class HousingFragment extends Fragment {
 
+    public class HousingFragment extends Fragment {
     private static final String TAG = "HOUSING_FRAGMENT";
 
     @Nullable
