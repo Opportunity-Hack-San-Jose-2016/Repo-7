@@ -1,25 +1,27 @@
 package com.up.up_opportunity.recycler;
 
 import android.content.Context;
+import android.support.v7.widget.*;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.bumptech.glide.Glide;
+
 import com.up.up_opportunity.R;
+import com.up.up_opportunity.model.coupons.Coupons;
 
 import java.util.ArrayList;
 
 /**
  * Created by Billy on 7/9/16.
  */
-public class RecyclerView extends android.support.v7.widget.RecyclerView.Adapter<RecyclerView.RecyclerViewHolder> {
+public class CouponsRecyclerAdapter extends android.support.v7.widget.RecyclerView.Adapter<CouponsRecyclerAdapter.RecyclerViewHolder> {
 
-    private ArrayList<String> data;
+    private ArrayList<Coupons> data;
     private Context context;
 
-    public RecyclerView(ArrayList<String> data) {
+    public CouponsRecyclerAdapter(ArrayList<Coupons> data) {
         this.data = data;
     }
 
