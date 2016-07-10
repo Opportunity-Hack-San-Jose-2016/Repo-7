@@ -10,27 +10,33 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 import com.up.up_opportunity.fragments.CouponFragment;
 import com.up.up_opportunity.fragments.EventsFragment;
+import com.up.up_opportunity.fragments.FoodBankFragment;
+import com.up.up_opportunity.fragments.ForumFragment;
 import com.up.up_opportunity.fragments.HelpFragment;
-import com.up.up_opportunity.fragments.JobsFragment;
+import com.up.up_opportunity.fragments.jobs.JobsFragment;
+import com.up.up_opportunity.fragments.HousingFragment;
 import com.up.up_opportunity.fragments.LogoFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements HelpFragment.OnForumClickListener, HelpFragment.OnHousingClickListener, HelpFragment.OnFoodBankClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private BottomBar bottomBar;
     private Toolbar toolbar;
+    private ImageView logo;
     private ActionBar actionBar;
-    HelpFragment helpFragment;
-    JobsFragment jobsFragment;
-    EventsFragment eventsFragment;
-    CouponFragment couponFragment;
-    FragmentTransaction fragmentTransaction;
+    private HelpFragment helpFragment;
+    private JobsFragment jobsFragment;
+    private EventsFragment eventsFragment;
+    private CouponFragment couponFragment;
+    private FragmentTransaction fragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initViews(){
         toolbar = (Toolbar)findViewById(R.id.home_toolBar);
+
+//        logo = (ImageView)findViewById(R.id.logo_id);
 
     }
 
@@ -94,6 +102,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+//    private void turnOffLogo(){
+//        logo.setVisibility(View.GONE);
+//    }
+
+
+
     private void bottomBarClickListener(BottomBar bottomBar){
         bottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
             @Override
@@ -107,16 +121,25 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, "HELP");
                         break;
                     case R.id.bottomBarItemTwo:
+
+//                        turnOffLogo();
+
                         fragmentTransaction.replace(R.id.frag_container_id,jobsFragment);
                         fragmentTransaction.commit();
                         Log.d(TAG, "JOBS");
                         break;
                     case R.id.bottomBarItemThree:
+
+//                        turnOffLogo();
+
                         fragmentTransaction.replace(R.id.frag_container_id,eventsFragment);
                         fragmentTransaction.commit();
                         Log.d(TAG, "EVENTS");
                         break;
                     case R.id.bottomBarItemFour:
+
+//                        turnOffLogo();
+
                         fragmentTransaction.replace(R.id.frag_container_id,couponFragment);
                         fragmentTransaction.commit();
                         Log.d(TAG, "DISCOUNTS");
@@ -162,10 +185,33 @@ public class MainActivity extends AppCompatActivity {
 
         // Setting colors for different tabs when there's more than three of them.
         // You can set colors for tabs in three different ways as shown below.
-        bottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.tab1));
-        bottomBar.mapColorForTab(1, ContextCompat.getColor(this, R.color.tab2));
-        bottomBar.mapColorForTab(2, ContextCompat.getColor(this, R.color.tab3));
-        bottomBar.mapColorForTab(3, ContextCompat.getColor(this, R.color.tab4));
+        bottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorPrimary));
+        bottomBar.mapColorForTab(1, ContextCompat.getColor(this, R.color.colorPrimary));
+        bottomBar.mapColorForTab(2, ContextCompat.getColor(this, R.color.colorPrimary));
+        bottomBar.mapColorForTab(3, ContextCompat.getColor(this, R.color.colorPrimary));
     }
 
+    @Override
+    public void onFoodBankClicked() {
+        initFragManager();
+        FoodBankFragment foodBankFragment = new FoodBankFragment();
+        fragmentTransaction.replace(R.id.frag_container_id,foodBankFragment);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onForumClicked() {
+        initFragManager();
+        ForumFragment forumFragment = new ForumFragment();
+        fragmentTransaction.replace(R.id.frag_container_id,forumFragment);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onHousingClicked() {
+        initFragManager();
+        HousingFragment housingFragment = new HousingFragment();
+        fragmentTransaction.replace(R.id.frag_container_id,housingFragment);
+        fragmentTransaction.commit();
+    }
 }

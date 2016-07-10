@@ -41,9 +41,7 @@ public class EventsFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_events, container, false);
         setRetainInstance(true);
-
-
-
+        recyclerView = (RecyclerView) v.findViewById(R.id.list_recyclerView_event);
         return v;
     }
 
@@ -53,7 +51,7 @@ public class EventsFragment extends android.support.v4.app.Fragment {
         Log.i(TAG, "onViewCreated: ");
 
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.list_recyclerView_event);
+
 
         submitButton = (Button)view.findViewById(R.id.eventButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -119,5 +117,4 @@ public class EventsFragment extends android.support.v4.app.Fragment {
 
 
     }
-
 }
