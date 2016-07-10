@@ -83,6 +83,4 @@ public class HelpFragment extends android.support.v4.app.Fragment {
     public interface OnHousingClickListener{
         void onHousingClicked();
     }
-
-
 }
