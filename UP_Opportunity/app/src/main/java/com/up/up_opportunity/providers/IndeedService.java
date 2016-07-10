@@ -35,10 +35,10 @@ public interface IndeedService {
 
 
     @GET("apisearch?")
-    Call<Indeed> getHotels(@Query("publisher") String apiKey,
+    Call<Indeed> getIndeedJobs(@Query("publisher") String apiKey,
                            @Query("q") String query,
                            @Query("l") String city,
-                           @Query("co") int country,
+                           @Query("co") String country,
                            @Query("limit") String limit,
                            @Query("latlong") String latLong,
                            @Query("v") String version,
