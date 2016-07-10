@@ -1,6 +1,8 @@
 package com.up.up_opportunity.fragments.jobs;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -42,12 +44,33 @@ public class JobsFragment extends android.support.v4.app.Fragment {
     private RecyclerView jobRecyclerView;
     private Indeed indeed;
 
+    private LinearLayoutManager linearLayoutManager;
+    private JobsRVAdapter jobsRVAdapter;
+    SharedPreferences sharedPreferences;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_jobs,container,false);
         setRetainInstance(true);
+        Log.d(TAG, "JobsFragment: OnCreateView");
+
+        cityEditText = (EditText)view.findViewById(R.id.job_city_editText);
+        jobTitleEditText = (EditText)view.findViewById(R.id.job_title_editText);
+        jobRecyclerView = (RecyclerView)view.findViewById(R.id.job_recyclerView);
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        sharedPreferences = getActivity().getSharedPreferences("JOBS", Context.MODE_PRIVATE);
+
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("Indeed","");
+        if(json != ""){
+            Indeed indeed = gson.fromJson(json, Indeed.class);
+            jobRecyclerView.setLayoutManager(linearLayoutManager);
+            jobsRVAdapter = new JobsRVAdapter(indeed.getResults());
+            jobRecyclerView.setAdapter(jobsRVAdapter);
+        }
+
+
         return view;
     }
 
@@ -55,10 +78,6 @@ public class JobsFragment extends android.support.v4.app.Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "onViewCreated: ");
-
-        cityEditText = (EditText)view.findViewById(R.id.job_city_editText);
-        jobTitleEditText = (EditText)view.findViewById(R.id.job_title_editText);
-        jobRecyclerView = (RecyclerView)view.findViewById(R.id.job_recyclerView);
 
 
         submitButton = (Button)view.findViewById(R.id.job_fragment_submit_button);
@@ -101,10 +120,16 @@ public class JobsFragment extends android.support.v4.app.Fragment {
                             indeed = response.body();
                             String title = indeed.getResults().get(0).getJobtitle();
                             Log.d(TAG, "JOB TITLE: " + title);
-                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+
                             jobRecyclerView.setLayoutManager(linearLayoutManager);
-                            JobsRVAdapter jobsRVAdapter = new JobsRVAdapter(indeed.getResults());
+                            jobsRVAdapter = new JobsRVAdapter(indeed.getResults());
                             jobRecyclerView.setAdapter(jobsRVAdapter);
+
+                            SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
+                            Gson gson = new Gson();
+                            String json = gson.toJson(indeed);
+                            prefsEditor.putString("Indeed", json);
+                            prefsEditor.commit();
                         }
                     }
 
