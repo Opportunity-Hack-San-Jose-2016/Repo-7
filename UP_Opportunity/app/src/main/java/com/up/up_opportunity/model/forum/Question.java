@@ -1,6 +1,7 @@
 package com.up.up_opportunity.model.forum;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by adao1 on 7/9/2016.
@@ -8,15 +9,16 @@ import java.util.ArrayList;
 public class Question {
     private String question;
     private int numAnswers;
-    private int timestamp;
-    private ArrayList<String> answers;
+    private String timestamp;
+    private List<Answer> answers = new ArrayList<>();
 
     public Question() {
     }
 
-    public Question(String question, int timestamp) {
+    public Question(String question, String timestamp) {
         this.question = question;
         this.timestamp = timestamp;
+//        answers = new ArrayList<>();
     }
 
     public String getQuestion() {
@@ -27,24 +29,24 @@ public class Question {
         this.question = question;
     }
 
-    public int getNumAnswers() {
-        return answers.size();
+    public String getNumAnswers() {
+        return answers.size()+"";
     }
 
 
-    public int getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(int timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
-    public ArrayList<String> getAnswers() {
+    public List<Answer> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(ArrayList<String> answers) {
+    public void setAnswers(ArrayList<Answer> answers) {
         this.answers = answers;
     }
 }
