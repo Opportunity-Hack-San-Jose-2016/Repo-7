@@ -1,11 +1,11 @@
 package com.up.up_opportunity.fragments.jobs;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -47,6 +47,7 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
     private Indeed indeed;
 
     private LinearLayoutManager linearLayoutManager;
+    private GridLayoutManager gridLayoutManager;
     private JobsRVAdapter jobsRVAdapter;
     SharedPreferences sharedPreferences;
 
@@ -61,13 +62,15 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
         jobTitleEditText = (EditText)view.findViewById(R.id.job_title_editText);
         jobRecyclerView = (RecyclerView)view.findViewById(R.id.job_recyclerView);
         linearLayoutManager = new LinearLayoutManager(getContext());
+        gridLayoutManager = new GridLayoutManager(getContext(), 2);
         sharedPreferences = getActivity().getSharedPreferences("JOBS", Context.MODE_PRIVATE);
 
         Gson gson = new Gson();
         String json = sharedPreferences.getString("Indeed","");
         if(json != ""){
             Indeed indeed = gson.fromJson(json, Indeed.class);
-            jobRecyclerView.setLayoutManager(linearLayoutManager);
+            //jobRecyclerView.setLayoutManager(linearLayoutManager);
+            jobRecyclerView.setLayoutManager(gridLayoutManager);
             jobsRVAdapter = new JobsRVAdapter(this, indeed.getResults());
             jobRecyclerView.setAdapter(jobsRVAdapter);
         }
