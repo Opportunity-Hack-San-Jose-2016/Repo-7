@@ -1,15 +1,14 @@
 package com.up.up_opportunity.fragments.jobs;
 
-import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.up.up_opportunity.JobWebViewActivity;
 import com.up.up_opportunity.R;
 import com.up.up_opportunity.model.job.IndeedResults;
 
@@ -21,7 +20,7 @@ import java.util.List;
 public class JobsRVAdapter extends RecyclerView.Adapter<JobsRVAdapter.JobsViewHolder> {
     private static final String TAG = JobsRVAdapter.class.getSimpleName();
 
-
+    int color;
     List<IndeedResults> results;
     private JobClickListener jobClickListener;
 
@@ -35,18 +34,19 @@ public class JobsRVAdapter extends RecyclerView.Adapter<JobsRVAdapter.JobsViewHo
         CardView jobCardView;
         TextView titleTextView;
         TextView companyTextView;
-        TextView cityTextView;
-        TextView stateTextView;
+        TextView locationTextView;
         TextView postedTextView;
+        ImageView jobImageView;
 
         public JobsViewHolder(View itemView) {
             super(itemView);
             jobCardView = (CardView)itemView.findViewById(R.id.job_cardView);
             titleTextView = (TextView)itemView.findViewById(R.id.job_title_textView);
             companyTextView = (TextView)itemView.findViewById(R.id.job_company_textView);
-            cityTextView = (TextView)itemView.findViewById(R.id.job_city_textView);
-            stateTextView = (TextView)itemView.findViewById(R.id.job_state_textView);
+            locationTextView = (TextView)itemView.findViewById(R.id.job_location_textView);
             postedTextView = (TextView)itemView.findViewById(R.id.job_posted_textView);
+            jobImageView = (ImageView)itemView.findViewById(R.id.job_imageView);
+
         }
 
         public void bind(final JobClickListener jobClickListener, final String link){
@@ -75,6 +75,9 @@ public class JobsRVAdapter extends RecyclerView.Adapter<JobsRVAdapter.JobsViewHo
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_jobs, parent, false);
         JobsViewHolder jobsViewHolder = new JobsViewHolder(view);
 
+        color = ContextCompat.getColor(parent.getContext(), R.color.colorPrimary);
+
+
         return jobsViewHolder;
     }
 
@@ -83,9 +86,10 @@ public class JobsRVAdapter extends RecyclerView.Adapter<JobsRVAdapter.JobsViewHo
 
         holder.titleTextView.setText(results.get(position).getJobtitle());
         holder.companyTextView.setText(results.get(position).getCompany());
-        holder.cityTextView.setText(results.get(position).getCity());
-        holder.stateTextView.setText(results.get(position).getState());
+        holder.locationTextView.setText(results.get(position).getFormattedLocationFull());
         holder.postedTextView.setText(results.get(position).getFormattedRelativeTime());
+        holder.jobImageView.setImageResource(R.drawable.ic_card_travel_black_24dp);
+        holder.jobImageView.setColorFilter(color);
 
         final String url = results.get(position).getUrl();
         holder.bind(jobClickListener, url);

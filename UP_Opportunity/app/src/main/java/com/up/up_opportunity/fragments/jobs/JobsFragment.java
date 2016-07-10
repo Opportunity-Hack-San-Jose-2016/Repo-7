@@ -1,11 +1,13 @@
 package com.up.up_opportunity.fragments.jobs;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -44,9 +46,12 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
     private EditText cityEditText;
     private EditText jobTitleEditText;
     private RecyclerView jobRecyclerView;
+    private SwipeRefreshLayout jobsSwipeRefreshLayout;
     private Indeed indeed;
 
+
     private LinearLayoutManager linearLayoutManager;
+    private GridLayoutManager gridLayoutManager;
     private JobsRVAdapter jobsRVAdapter;
     SharedPreferences sharedPreferences;
 
@@ -60,20 +65,50 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
         cityEditText = (EditText)view.findViewById(R.id.job_city_editText);
         jobTitleEditText = (EditText)view.findViewById(R.id.job_title_editText);
         jobRecyclerView = (RecyclerView)view.findViewById(R.id.job_recyclerView);
+        jobsSwipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.job_swipeRefreshLayout);
         linearLayoutManager = new LinearLayoutManager(getContext());
+        gridLayoutManager = new GridLayoutManager(getContext(), 2);
         sharedPreferences = getActivity().getSharedPreferences("JOBS", Context.MODE_PRIVATE);
+
+        jobsSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryLight, R.color.colorAccent, R.color.colorPrimary);
 
         Gson gson = new Gson();
         String json = sharedPreferences.getString("Indeed","");
         if(json != ""){
             Indeed indeed = gson.fromJson(json, Indeed.class);
             jobRecyclerView.setLayoutManager(linearLayoutManager);
+            //jobRecyclerView.setLayoutManager(gridLayoutManager);
             jobsRVAdapter = new JobsRVAdapter(this, indeed.getResults());
             jobRecyclerView.setAdapter(jobsRVAdapter);
         }
 
+        swipeJobsRefreshListener();
+
         return view;
     }
+
+    private void swipeJobsRefreshListener(){
+        jobsSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshJobsContent();
+            }
+        });
+    }
+
+    /**
+     * Pull down to refresh will make new API call
+     */
+    private void refreshJobsContent(){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                jobsApiCall();
+                jobsSwipeRefreshLayout.setRefreshing(false);
+            }
+        }, 0);
+    }
+
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -85,64 +120,69 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-                logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
-                OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                        .addInterceptor(logging)
-                        .build();
-
-                GsonBuilder gsonBuilder = new GsonBuilder()
-                        .setLenient();
-                Gson gson = gsonBuilder.create();
-
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("http://api.indeed.com/ads/")
-                        .addConverterFactory(GsonConverterFactory.create(gson))
-                        .client(okHttpClient)
-                        .build();
-
-                IndeedService service = retrofit.create(IndeedService.class);
-
-                String apiKey = "7516191153543229";
-                String query = jobTitleEditText.getText().toString();
-                String city = cityEditText.getText().toString();
-                String country = "us";
-                String limit = "40";
-                String latLong = "";
-                String version = "2";
-                String format = "json";
-
-                Call<Indeed> call = service.getIndeedJobs(apiKey, query, city, country, limit, latLong, version, format);
-                call.enqueue(new Callback<Indeed>() {
-                    @Override
-                    public void onResponse(Call<Indeed> call, Response<Indeed> response) {
-                        if(response.isSuccessful()){
-                            indeed = response.body();
-                            String title = indeed.getResults().get(0).getJobtitle();
-                            Log.d(TAG, "JOB TITLE: " + title);
-
-                            jobRecyclerView.setLayoutManager(linearLayoutManager);
-                            jobsRVAdapter = new JobsRVAdapter(JobsFragment.this, indeed.getResults());
-                            jobRecyclerView.setAdapter(jobsRVAdapter);
-
-                            SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
-                            Gson gson = new Gson();
-                            String json = gson.toJson(indeed);
-                            prefsEditor.putString("Indeed", json);
-                            prefsEditor.commit();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Indeed> call, Throwable t) {
-                        t.printStackTrace();
-                    }
-                });
-
+                jobsApiCall();
             }
         });
     }
+
+    private void jobsApiCall(){
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .build();
+
+        GsonBuilder gsonBuilder = new GsonBuilder()
+                .setLenient();
+        Gson gson = gsonBuilder.create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://api.indeed.com/ads/")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(okHttpClient)
+                .build();
+
+        IndeedService service = retrofit.create(IndeedService.class);
+
+        String apiKey = "7516191153543229";
+        String query = jobTitleEditText.getText().toString();
+        String city = cityEditText.getText().toString();
+        String country = "us";
+        String limit = "40";
+        String latLong = "";
+        String version = "2";
+        String format = "json";
+
+        Call<Indeed> call = service.getIndeedJobs(apiKey, query, city, country, limit, latLong, version, format);
+        call.enqueue(new Callback<Indeed>() {
+            @Override
+            public void onResponse(Call<Indeed> call, Response<Indeed> response) {
+                if(response.isSuccessful()){
+                    indeed = response.body();
+                    String title = indeed.getResults().get(0).getJobtitle();
+                    Log.d(TAG, "JOB TITLE: " + title);
+
+                    jobRecyclerView.setLayoutManager(linearLayoutManager);
+                    jobsRVAdapter = new JobsRVAdapter(JobsFragment.this, indeed.getResults());
+                    jobRecyclerView.setAdapter(jobsRVAdapter);
+
+                    SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
+                    Gson gson = new Gson();
+                    String json = gson.toJson(indeed);
+                    prefsEditor.putString("Indeed", json);
+                    prefsEditor.commit();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Indeed> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+    }
+
 
     @Override
     public void onCardViewClick(String link) {
