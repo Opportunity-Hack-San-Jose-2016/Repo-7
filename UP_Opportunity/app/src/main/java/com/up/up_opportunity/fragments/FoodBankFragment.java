@@ -2,8 +2,10 @@ package com.up.up_opportunity.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -36,14 +38,43 @@ public class FoodBankFragment extends Fragment implements FoodBankAdapter.FoodCl
     private ArrayList<Business> foodBanks;
     private FoodBankAdapter foodBankAdapter;
     private RecyclerView foodBankRV;
+    private SwipeRefreshLayout foodbankSwipeRefreshLayout;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_foodbank,container,false);
         foodBankRV = (RecyclerView)view.findViewById(R.id.foodbank_RV);
+        foodbankSwipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.foodbank_swipeRefreshLayout);
+        foodbankSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryLight, R.color.colorAccent, R.color.colorPrimary);
+
+        swipeFoodbankRefreshListener();
+
         return view;
     }
+
+    private void swipeFoodbankRefreshListener(){
+        foodbankSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshFoodbankContent();
+            }
+        });
+    }
+
+    /**
+     * Pull down to refresh will make new API call
+     */
+    private void refreshFoodbankContent(){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                manageYelpApi();
+                foodbankSwipeRefreshLayout.setRefreshing(false);
+            }
+        }, 0);
+    }
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
