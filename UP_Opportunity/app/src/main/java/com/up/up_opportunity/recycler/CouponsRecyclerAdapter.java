@@ -20,10 +20,10 @@ import java.util.ArrayList;
  */
 public class CouponsRecyclerAdapter extends android.support.v7.widget.RecyclerView.Adapter<CouponsRecyclerAdapter.RecyclerViewHolder> {
 
-    private ArrayList<Coupons> data;
+    private CouponsArray data;
     private Context context;
 
-    public CouponsRecyclerAdapter(ArrayList<Coupons> data) {
+    public CouponsRecyclerAdapter(CouponsArray data) {
         this.data = data;
     }
 
@@ -43,9 +43,9 @@ public class CouponsRecyclerAdapter extends android.support.v7.widget.RecyclerVi
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
-        holder.title.setText(data.get(position).getDealTitle());
-        String imageURI = data.get(position).getShowImageStandardBig();
-        holder.info.setText(data.get(position).getDealinfo());
+        holder.title.setText(data.getCoupons().get(position).getDealTitle());
+        String imageURI = data.getCoupons().get(position).getShowImageStandardBig();
+        holder.info.setVisibility(View.GONE);
 
         if (imageURI.isEmpty()) {
             imageURI = "R.drawable.blank_white.png";
@@ -75,7 +75,7 @@ public class CouponsRecyclerAdapter extends android.support.v7.widget.RecyclerVi
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return data.getCoupons().size();
     }
 
 

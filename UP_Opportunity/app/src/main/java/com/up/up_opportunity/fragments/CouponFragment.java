@@ -23,7 +23,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,7 +41,7 @@ public class CouponFragment extends Fragment {
     private CouponService couponService;
     private CouponsRecyclerAdapter couponsRecyclerAdapter;
     private RecyclerView recyclerView;
-    private ArrayList<Coupons> couponsList;
+    private CouponsArray couponsList;
     private String couponHTTP = "http://api.8coupons.com/v1/";
     private int zipCode = 95131;
     private int mileRadius = 20;
@@ -56,7 +58,6 @@ public class CouponFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_coupon, container, false);
         setRetainInstance(true);
-        couponsList = new ArrayList<>();
         recyclerView = (RecyclerView) v.findViewById(R.id.coupon_recycler_id);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -74,12 +75,19 @@ public class CouponFragment extends Fragment {
 
     private void retrofit(){
 
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .build();
+
         GsonBuilder gsonBuilder = new GsonBuilder().setLenient();
         Gson gson = gsonBuilder.create();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(couponHTTP)
                 .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(okHttpClient)
                 .build();
 
         // &zip=95131&mileradius=20&limit=50&orderby=radius&categoryid=2,6
@@ -91,17 +99,15 @@ public class CouponFragment extends Fragment {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 String parsedRespone = null;
                 try {
-                    parsedRespone = response.body().string().replace("[","").replace("]","");
+                    parsedRespone = response.body().string().replace("[","{\"coupons\" : [").replace("]","]}");
                     Gson gson = new Gson();
 
-                    Coupons couponsData = gson.fromJson(parsedRespone, Coupons.class);
+                    CouponsArray couponsData = gson.fromJson(parsedRespone, CouponsArray.class);
                     if (couponsData == null) {
                         return;
                     }
 
-                    String title = couponsData.getDealTitle();
-                    Log.i(TAG, title);
-                    couponsRecyclerAdapter = new CouponsRecyclerAdapter(couponsList);
+                    couponsRecyclerAdapter = new CouponsRecyclerAdapter(couponsData);
                     recyclerView.setAdapter(couponsRecyclerAdapter);
                     couponsRecyclerAdapter.notifyDataSetChanged();
                     //Collections.addAll(couponsList, couponsData);
