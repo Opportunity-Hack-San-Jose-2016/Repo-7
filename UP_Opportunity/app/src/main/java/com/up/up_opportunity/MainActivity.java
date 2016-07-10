@@ -190,6 +190,7 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
         bottomBar.mapColorForTab(1, ContextCompat.getColor(this, R.color.colorPrimary));
         bottomBar.mapColorForTab(2, ContextCompat.getColor(this, R.color.colorPrimary));
         bottomBar.mapColorForTab(3, ContextCompat.getColor(this, R.color.colorPrimary));
+
     }
 
     @Override
