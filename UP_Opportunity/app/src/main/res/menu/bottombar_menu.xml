@@ -3,17 +3,17 @@
     <item
         android:id="@+id/bottomBarItemOne"
         android:icon="@android:drawable/ic_input_add"
-        android:title="Recents" />
+        android:title="Help" />
     <item
         android:id="@+id/bottomBarItemTwo"
         android:icon="@android:drawable/ic_input_add"
-        android:title="Recents" />
+        android:title="Jobs" />
     <item
         android:id="@+id/bottomBarItemThree"
         android:icon="@android:drawable/ic_input_add"
-        android:title="Recents" />
+        android:title="Eventss" />
     <item
         android:id="@+id/bottomBarItemFour"
         android:icon="@android:drawable/ic_input_add"
-        android:title="Recents" />
+        android:title="Coupons" />
 </menu>
