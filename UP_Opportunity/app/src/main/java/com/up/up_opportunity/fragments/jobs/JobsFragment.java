@@ -2,6 +2,7 @@ package com.up.up_opportunity.fragments.jobs;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.up.up_opportunity.JobWebViewActivity;
 import com.up.up_opportunity.R;
 import com.up.up_opportunity.model.job.Indeed;
 import com.up.up_opportunity.providers.IndeedService;
@@ -35,7 +37,7 @@ import retrofit2.http.Query;
 /**
  * Created by adao1 on 7/9/2016.
  */
-public class JobsFragment extends android.support.v4.app.Fragment {
+public class JobsFragment extends android.support.v4.app.Fragment implements JobsRVAdapter.JobClickListener {
 
     private static final String TAG = "JOBS_FRAGMENT";
     private Button submitButton;
@@ -66,10 +68,9 @@ public class JobsFragment extends android.support.v4.app.Fragment {
         if(json != ""){
             Indeed indeed = gson.fromJson(json, Indeed.class);
             jobRecyclerView.setLayoutManager(linearLayoutManager);
-            jobsRVAdapter = new JobsRVAdapter(indeed.getResults());
+            jobsRVAdapter = new JobsRVAdapter(this, indeed.getResults());
             jobRecyclerView.setAdapter(jobsRVAdapter);
         }
-
 
         return view;
     }
@@ -122,7 +123,7 @@ public class JobsFragment extends android.support.v4.app.Fragment {
                             Log.d(TAG, "JOB TITLE: " + title);
 
                             jobRecyclerView.setLayoutManager(linearLayoutManager);
-                            jobsRVAdapter = new JobsRVAdapter(indeed.getResults());
+                            jobsRVAdapter = new JobsRVAdapter(JobsFragment.this, indeed.getResults());
                             jobRecyclerView.setAdapter(jobsRVAdapter);
 
                             SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
@@ -141,7 +142,13 @@ public class JobsFragment extends android.support.v4.app.Fragment {
 
             }
         });
+    }
 
-
+    @Override
+    public void onCardViewClick(String link) {
+        Intent intent = new Intent(getActivity(), JobWebViewActivity.class);
+        intent.putExtra("link", link);
+        startActivity(intent);
+        Log.d(TAG, "JobsFragment: Card Clicked: " + link);
     }
 }

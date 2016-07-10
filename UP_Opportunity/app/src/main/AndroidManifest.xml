@@ -11,8 +11,7 @@
         android:supportsRtl="true"
         android:name=".UpApplication"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".MainActivity">
-        </activity>
+        <activity android:name=".MainActivity"></activity>
         <activity android:name=".fragments.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,6 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".JobWebViewActivity"></activity>
     </application>
 
 </manifest>
