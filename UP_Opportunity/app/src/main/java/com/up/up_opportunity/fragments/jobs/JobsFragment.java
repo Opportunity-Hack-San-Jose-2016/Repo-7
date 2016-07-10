@@ -46,6 +46,7 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
     private RecyclerView jobRecyclerView;
     private Indeed indeed;
 
+
     private LinearLayoutManager linearLayoutManager;
     private GridLayoutManager gridLayoutManager;
     private JobsRVAdapter jobsRVAdapter;
@@ -64,6 +65,8 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
         linearLayoutManager = new LinearLayoutManager(getContext());
         gridLayoutManager = new GridLayoutManager(getContext(), 2);
         sharedPreferences = getActivity().getSharedPreferences("JOBS", Context.MODE_PRIVATE);
+
+
 
         Gson gson = new Gson();
         String json = sharedPreferences.getString("Indeed","");
