@@ -1,5 +1,6 @@
 package com.up.up_opportunity.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.up.up_opportunity.FoodBankAdapter;
+import com.up.up_opportunity.JobWebViewActivity;
 import com.up.up_opportunity.R;
 import com.yelp.clientlib.connection.YelpAPI;
 import com.yelp.clientlib.connection.YelpAPIFactory;
@@ -28,7 +30,7 @@ import retrofit2.Response;
 /**
  * Created by adao1 on 7/9/2016.
  */
-public class FoodBankFragment extends Fragment {
+public class FoodBankFragment extends Fragment implements FoodBankAdapter.FoodClickListener {
 
     private static final String TAG = "FOODBANK_FRAGMENT";
     private ArrayList<Business> foodBanks;
@@ -54,7 +56,7 @@ public class FoodBankFragment extends Fragment {
 
     private void makeRVAdapter(){
         foodBanks= new ArrayList<>();
-        foodBankAdapter = new FoodBankAdapter(foodBanks);
+        foodBankAdapter = new FoodBankAdapter(FoodBankFragment.this, foodBanks);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         foodBankRV.setLayoutManager(layoutManager);
         foodBankRV.setAdapter(foodBankAdapter);
@@ -83,5 +85,13 @@ public class FoodBankFragment extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onCardViewClick(String link) {
+        Intent intent = new Intent(getActivity(), JobWebViewActivity.class);
+        intent.putExtra("link", link);
+        startActivity(intent);
+        Log.d(TAG, "JobsFragment: Card Clicked: " + link);
     }
 }

@@ -25,8 +25,15 @@ public class FoodBankAdapter extends RecyclerView.Adapter<FoodBankAdapter.ViewHo
     private static final String TAG = "FOODBANK_ADAPER";
     private List<Business> foodBanks;
     private Context context;
+    private FoodClickListener foodClickListener;
 
-    public FoodBankAdapter(List<Business> foodBanks) {
+    public interface FoodClickListener{
+        void onCardViewClick(String link);
+    }
+
+
+    public FoodBankAdapter(FoodClickListener foodClickListener, List<Business> foodBanks) {
+        this.foodClickListener = foodClickListener;
         this.foodBanks = foodBanks;
     }
 
@@ -52,6 +59,11 @@ public class FoodBankAdapter extends RecyclerView.Adapter<FoodBankAdapter.ViewHo
                 .load(foodBank.imageUrl().replaceAll("ms", "ls"))
                 .into(holder.imageIV);
 
+        final String url = foodBank.mobileUrl();
+        Log.d(TAG, "FoodBankAdapter URL: " + url);
+        holder.bind(foodClickListener, url);
+
+
     }
 
     @Override
@@ -71,5 +83,15 @@ public class FoodBankAdapter extends RecyclerView.Adapter<FoodBankAdapter.ViewHo
             addressTV = (TextView)itemView.findViewById(R.id.foodbank_item_address);
             imageIV = (ImageView)itemView.findViewById(R.id.foodbank_item_image);
         }
+
+        public void bind(final FoodClickListener foodClickListener, final String link){
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    foodClickListener.onCardViewClick(link);
+                }
+            });
+        }
+
     }
 }
