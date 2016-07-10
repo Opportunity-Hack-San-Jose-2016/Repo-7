@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.up.up_opportunity.R;
 import com.up.up_opportunity.model.coupons.Coupons;
+import com.up.up_opportunity.model.coupons.CouponsArray;
 
 import java.util.ArrayList;
 
@@ -41,21 +43,22 @@ public class CouponsRecyclerAdapter extends android.support.v7.widget.RecyclerVi
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
-//        holder.title.setText(data.get(position).getTitle());
-//        String imageURI = data.get(position).getImage();
-//
-//        if (imageURI.isEmpty()) {
-//            imageURI = "R.drawable.blank_white.png";
-//        }
-//
-//        Glide
-//                .with(context)
-//                .load("https://webknox.com/recipeImages/"+ imageURI)
-//                .centerCrop()
-//                .placeholder(R.drawable.blank_white)
-//                .crossFade()
-//                .override(150,150)
-//                .into(holder.imageView);
+        holder.title.setText(data.get(position).getDealTitle());
+        String imageURI = data.get(position).getShowImageStandardBig();
+        holder.info.setText(data.get(position).getDealinfo());
+
+        if (imageURI.isEmpty()) {
+            imageURI = "R.drawable.blank_white.png";
+        }
+
+        Glide
+                .with(context)
+                .load(imageURI)
+                .centerCrop()
+                .placeholder(R.drawable.blank_white)
+                .crossFade()
+                .override(150,150)
+                .into(holder.imageView);
 
     }
 

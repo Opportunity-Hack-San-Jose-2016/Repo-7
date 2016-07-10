@@ -10,15 +10,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.up.up_opportunity.R;
 import com.up.up_opportunity.keys.keys;
 import com.up.up_opportunity.model.coupons.Coupons;
+import com.up.up_opportunity.model.coupons.CouponsArray;
 import com.up.up_opportunity.providers.CouponService;
 import com.up.up_opportunity.recycler.CouponsRecyclerAdapter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,7 +40,15 @@ public class CouponFragment extends Fragment {
     private CouponsRecyclerAdapter couponsRecyclerAdapter;
     private RecyclerView recyclerView;
     private ArrayList<Coupons> couponsList;
-    private String couponHTTP = "http://api.8coupons.com/v1/getdeals?key=";
+    private String couponHTTP = "http://api.8coupons.com/v1/";
+    private int zipCode = 95131;
+    private int mileRadius = 20;
+    private int limit = 10;
+    private String orderBy = "radius";
+    private String category = "2,6";
+
+
+
 
     
     @Nullable
@@ -44,11 +57,11 @@ public class CouponFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_coupon, container, false);
         setRetainInstance(true);
         couponsList = new ArrayList<>();
-        recyclerView = (RecyclerView) v.findViewById(R.id.list_recyclerView_id);
+        recyclerView = (RecyclerView) v.findViewById(R.id.coupon_recycler_id);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        couponsRecyclerAdapter = new CouponsRecyclerAdapter(couponsList);
-        recyclerView.setAdapter(couponsRecyclerAdapter);
 
+
+        retrofit();
 
         return v;
     }
@@ -59,37 +72,52 @@ public class CouponFragment extends Fragment {
         Log.i(TAG, "onViewCreated: ");
     }
 
-    private void retrofit(int zipCode){
+    private void retrofit(){
+
+        GsonBuilder gsonBuilder = new GsonBuilder().setLenient();
+        Gson gson = gsonBuilder.create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(couponHTTP + keys.COUPON_KEY)
-                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(couponHTTP)
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
+        // &zip=95131&mileradius=20&limit=50&orderby=radius&categoryid=2,6
+
         couponService = retrofit.create(CouponService.class);
-        Call<Coupons> call = couponService.getCoupons(zipCode);
-        call.enqueue(new Callback<Coupons>() {
+        Call<ResponseBody> call = couponService.getCoupons(keys.COUPON_KEY, zipCode, mileRadius, limit, orderBy, category);
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<Coupons> call, Response<Coupons> response) {
-                Coupons couponsResponse = response.body();
-                if (couponsResponse == null) {
-                    return;
-                }
-                Collections.addAll(couponsList, couponsResponse.getResult());
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                String parsedRespone = null;
+                try {
+                    parsedRespone = response.body().string().replace("[","").replace("]","");
+                    Gson gson = new Gson();
 
+                    Coupons couponsData = gson.fromJson(parsedRespone, Coupons.class);
+                    if (couponsData == null) {
+                        return;
+                    }
 
-                if (recyclerView != null) {
+                    String title = couponsData.getDealTitle();
+                    Log.i(TAG, title);
+                    couponsRecyclerAdapter = new CouponsRecyclerAdapter(couponsList);
+                    recyclerView.setAdapter(couponsRecyclerAdapter);
                     couponsRecyclerAdapter.notifyDataSetChanged();
+                    //Collections.addAll(couponsList, couponsData);
+    //                Log.i(TAG, " "+ couponsList);
+                    if (recyclerView != null) {
+
+                        }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
 
             @Override
-            public void onFailure(Call<Coupons> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 t.printStackTrace();
             }
         });
     }
-
-    }
-
 }

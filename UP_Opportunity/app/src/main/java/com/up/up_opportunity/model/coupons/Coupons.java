@@ -5,7 +5,90 @@ package com.up.up_opportunity.model.coupons;
  */
 public class Coupons {
 
-//
+    private String name;
+    private String address;
+    private String phone;
+    private String URL;
+    private String storeURL;
+    private String dealTitle;
+    private String dealinfo;
+    private String expirationDate;
+    private String showImageStandardBig;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getURL() {
+        return URL;
+    }
+
+    public void setURL(String URL) {
+        this.URL = URL;
+    }
+
+    public String getStoreURL() {
+        return storeURL;
+    }
+
+    public void setStoreURL(String storeURL) {
+        this.storeURL = storeURL;
+    }
+
+    public String getDealTitle() {
+        return dealTitle;
+    }
+
+    public void setDealTitle(String dealTitle) {
+        this.dealTitle = dealTitle;
+    }
+
+    public String getDealinfo() {
+        return dealinfo;
+    }
+
+    public void setDealinfo(String dealinfo) {
+        this.dealinfo = dealinfo;
+    }
+
+    public String getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(String expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    public String getShowImageStandardBig() {
+        return showImageStandardBig;
+    }
+
+    public void setShowImageStandardBig(String showImageStandardBig) {
+        this.showImageStandardBig = showImageStandardBig;
+    }
+
+
+    //
 //    [
 //    {
 //        "affiliate": "yes",
