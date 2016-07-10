@@ -17,7 +17,7 @@ import com.up.up_opportunity.model.event.GoogleEvent;
 import com.up.up_opportunity.model.job.Indeed;
 import com.up.up_opportunity.providers.EventApi;
 import com.up.up_opportunity.providers.IndeedService;
-import com.up.up_opportunity.recycler.RecyclerView;
+import android.support.v7.widget.RecyclerView;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
