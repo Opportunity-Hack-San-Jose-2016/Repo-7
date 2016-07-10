@@ -1,6 +1,5 @@
 package com.up.up_opportunity.fragments.jobs;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -46,6 +45,7 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
     private RecyclerView jobRecyclerView;
     private Indeed indeed;
 
+
     private LinearLayoutManager linearLayoutManager;
     private JobsRVAdapter jobsRVAdapter;
     SharedPreferences sharedPreferences;
@@ -62,6 +62,8 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
         jobRecyclerView = (RecyclerView)view.findViewById(R.id.job_recyclerView);
         linearLayoutManager = new LinearLayoutManager(getContext());
         sharedPreferences = getActivity().getSharedPreferences("JOBS", Context.MODE_PRIVATE);
+
+
 
         Gson gson = new Gson();
         String json = sharedPreferences.getString("Indeed","");
