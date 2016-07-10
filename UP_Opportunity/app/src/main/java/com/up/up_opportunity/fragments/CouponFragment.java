@@ -1,5 +1,7 @@
 package com.up.up_opportunity.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,9 +15,11 @@ import android.view.ViewGroup;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.up.up_opportunity.R;
+import com.up.up_opportunity.fragments.jobs.JobsRVAdapter;
 import com.up.up_opportunity.keys.keys;
 import com.up.up_opportunity.model.coupons.Coupons;
 import com.up.up_opportunity.model.coupons.CouponsArray;
+import com.up.up_opportunity.model.job.Indeed;
 import com.up.up_opportunity.providers.CouponService;
 import com.up.up_opportunity.recycler.CouponsRecyclerAdapter;
 
@@ -48,6 +52,7 @@ public class CouponFragment extends Fragment {
     private int limit = 50;
     private String orderBy = "radius";
     private String category = "2,6";
+    SharedPreferences sharedPreferences;
 
 
 
@@ -60,9 +65,21 @@ public class CouponFragment extends Fragment {
         setRetainInstance(true);
         recyclerView = (RecyclerView) v.findViewById(R.id.coupon_recycler_id);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        sharedPreferences = getActivity().getSharedPreferences("COUPONS", Context.MODE_PRIVATE);
+
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("Coupons","");
+        if(json != ""){
+            CouponsArray couponsData = gson.fromJson(json, CouponsArray.class);
+            //jobRecyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            couponsRecyclerAdapter = new CouponsRecyclerAdapter(couponsData);
+            recyclerView.setAdapter(couponsRecyclerAdapter);
+        }else{
+            retrofit();
+        }
 
 
-        retrofit();
 
         return v;
     }
@@ -112,6 +129,14 @@ public class CouponFragment extends Fragment {
                     couponsRecyclerAdapter.notifyDataSetChanged();
                     //Collections.addAll(couponsList, couponsData);
     //                Log.i(TAG, " "+ couponsList);
+
+                    SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
+                    Gson gsonCoupon = new Gson();
+                    String json = gsonCoupon.toJson(couponsData);
+                    prefsEditor.putString("Coupons", json);
+                    prefsEditor.commit();
+
+
                     if (recyclerView != null) {
 
                         }
