@@ -11,7 +11,7 @@
     <item
         android:id="@+id/bottomBarItemThree"
         android:icon="@android:drawable/ic_input_add"
-        android:title="Eventss" />
+        android:title="Events" />
     <item
         android:id="@+id/bottomBarItemFour"
         android:icon="@android:drawable/ic_input_add"
