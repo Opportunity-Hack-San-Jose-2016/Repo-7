@@ -105,7 +105,7 @@ public class EventsFragment extends android.support.v4.app.Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "onViewCreated: ");
+       // Log.i(TAG, "onViewCreated: ");
 
 //        submitButton = (Button)view.findViewById(R.id.eventButton);
 //        submitButton.setOnClickListener(new View.OnClickListener() {

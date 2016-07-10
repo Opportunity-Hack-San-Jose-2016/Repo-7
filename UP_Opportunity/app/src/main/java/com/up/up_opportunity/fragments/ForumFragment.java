@@ -53,7 +53,7 @@ public class ForumFragment extends Fragment implements QuestionViewHolder.OnQues
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "onViewCreated: ");
+        //Log.i(TAG, "onViewCreated: ");
         listener = this;
         initFirebase();
         setSubmitListener();
