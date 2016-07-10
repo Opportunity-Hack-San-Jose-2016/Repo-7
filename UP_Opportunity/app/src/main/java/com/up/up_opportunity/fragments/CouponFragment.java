@@ -1,8 +1,13 @@
 package com.up.up_opportunity.fragments;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,10 +17,13 @@ import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.up.up_opportunity.JobWebViewActivity;
 import com.up.up_opportunity.R;
+import com.up.up_opportunity.fragments.jobs.JobsRVAdapter;
 import com.up.up_opportunity.keys.keys;
 import com.up.up_opportunity.model.coupons.Coupons;
 import com.up.up_opportunity.model.coupons.CouponsArray;
+import com.up.up_opportunity.model.job.Indeed;
 import com.up.up_opportunity.providers.CouponService;
 import com.up.up_opportunity.recycler.CouponsRecyclerAdapter;
 
@@ -35,7 +43,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by Billy on 7/9/16.
  */
-public class CouponFragment extends Fragment {
+public class CouponFragment extends Fragment implements CouponsRecyclerAdapter.CouponClickListener{
 
     private static final String TAG = "COUPON_FRAGMENT";
     private CouponService couponService;
@@ -48,9 +56,8 @@ public class CouponFragment extends Fragment {
     private int limit = 50;
     private String orderBy = "radius";
     private String category = "2,6";
-
-
-
+    SharedPreferences sharedPreferences;
+    private SwipeRefreshLayout couponSwipeRefreshLayout;
 
     
     @Nullable
@@ -61,11 +68,51 @@ public class CouponFragment extends Fragment {
         recyclerView = (RecyclerView) v.findViewById(R.id.coupon_recycler_id);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        couponSwipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.coupon_swipeRefreshLayout);
+        couponSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryLight, R.color.colorAccent, R.color.colorPrimary);
 
-        retrofit();
+        sharedPreferences = getActivity().getSharedPreferences("COUPONS", Context.MODE_PRIVATE);
+
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("Coupons","");
+        if(json != ""){
+            CouponsArray couponsData = gson.fromJson(json, CouponsArray.class);
+            //jobRecyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            couponsRecyclerAdapter = new CouponsRecyclerAdapter(this, couponsData);
+            recyclerView.setAdapter(couponsRecyclerAdapter);
+        }else{
+            retrofit();
+        }
+
+        swipeCouponRefreshListener();
 
         return v;
     }
+
+    private void swipeCouponRefreshListener(){
+        couponSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshCouponContent();
+            }
+        });
+    }
+
+    /**
+     * Pull down to refresh will make new API call
+     */
+    private void refreshCouponContent(){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                retrofit();
+                couponSwipeRefreshLayout.setRefreshing(false);
+            }
+        }, 0);
+    }
+
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -107,11 +154,19 @@ public class CouponFragment extends Fragment {
                         return;
                     }
 
-                    couponsRecyclerAdapter = new CouponsRecyclerAdapter(couponsData);
+                    couponsRecyclerAdapter = new CouponsRecyclerAdapter(CouponFragment.this, couponsData);
                     recyclerView.setAdapter(couponsRecyclerAdapter);
                     couponsRecyclerAdapter.notifyDataSetChanged();
                     //Collections.addAll(couponsList, couponsData);
     //                Log.i(TAG, " "+ couponsList);
+
+                    SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
+                    Gson gsonCoupon = new Gson();
+                    String json = gsonCoupon.toJson(couponsData);
+                    prefsEditor.putString("Coupons", json);
+                    prefsEditor.commit();
+
+
                     if (recyclerView != null) {
 
                         }
@@ -125,5 +180,13 @@ public class CouponFragment extends Fragment {
                 t.printStackTrace();
             }
         });
+    }
+
+    @Override
+    public void onCardViewClick(String link) {
+        Intent intent = new Intent(getActivity(), JobWebViewActivity.class);
+        intent.putExtra("link", link);
+        startActivity(intent);
+        Log.d(TAG, "CouponFragment: Card Clicked: " + link);
     }
 }

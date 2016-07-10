@@ -23,22 +23,43 @@ public class CouponsRecyclerAdapter extends android.support.v7.widget.RecyclerVi
     private CouponsArray data;
     private Context context;
 
-    public CouponsRecyclerAdapter(CouponsArray data) {
-        this.data = data;
+
+    private CouponClickListener couponClickListener;
+
+    public interface CouponClickListener{
+        void onCardViewClick(String link);
     }
+
 
     // this is where we setup TextView
     public class RecyclerViewHolder extends android.support.v7.widget.RecyclerView.ViewHolder {
+        CardView couponCardView;
         ImageView imageView;
         TextView title;
         TextView info;
 
         public RecyclerViewHolder (final View itemView) {
             super(itemView);
+            couponCardView = (CardView)itemView.findViewById(R.id.custom_cardView);
             imageView = (ImageView) itemView.findViewById(R.id.imageOne_id);
             title = (TextView) itemView.findViewById(R.id.title_id);
             info = (TextView) itemView.findViewById(R.id.info_ID);
         }
+
+        public void bind(final CouponClickListener couponClickListener, final String link){
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    couponClickListener.onCardViewClick(link);
+                }
+            });
+        }
+    }
+
+
+    public CouponsRecyclerAdapter(CouponClickListener couponClickListener, CouponsArray data) {
+        this.couponClickListener = couponClickListener;
+        this.data = data;
     }
 
     @Override
@@ -46,6 +67,9 @@ public class CouponsRecyclerAdapter extends android.support.v7.widget.RecyclerVi
         holder.title.setText(data.getCoupons().get(position).getDealTitle());
         String imageURI = data.getCoupons().get(position).getShowImageStandardBig();
         holder.info.setVisibility(View.GONE);
+
+        String url = data.getCoupons().get(position).getURL();
+        holder.bind(couponClickListener, url);
 
         if (imageURI.isEmpty()) {
             imageURI = "R.drawable.blank_white.png";
