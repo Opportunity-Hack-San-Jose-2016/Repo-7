@@ -1,6 +1,7 @@
 package com.up.up_opportunity.recycler;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
  */
 public class GoogleEventsRecyclerView extends android.support.v7.widget.RecyclerView.Adapter<GoogleEventsRecyclerView.RecyclerViewHolder> {
 
+    int color;
     private GoogleEvent data;
     private Context context;
 
@@ -49,9 +51,11 @@ public class GoogleEventsRecyclerView extends android.support.v7.widget.Recycler
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         holder.title.setText(data.getResults().get(position).getName());
         holder.info.setText(data.getResults().get(position).getVicinity());
+        holder.imageView.setImageResource(R.drawable.ic_map_black_24dp);
+        holder.imageView.setColorFilter(color);
 
         Log.d("RV Adapter", "Events Size: " + data.getResults().size());
-//        String imageURI = data.get(position).getImage();
+//        String imageURI = data.getResults().get(position).getIcon();
 //
 //        if (imageURI.isEmpty()) {
 //            imageURI = "R.drawable.blank_white.png";
@@ -59,7 +63,7 @@ public class GoogleEventsRecyclerView extends android.support.v7.widget.Recycler
 //
 //        Glide
 //                .with(context)
-//                .load("https://webknox.com/recipeImages/"+ imageURI)
+//                .load(imageURI)
 //                .centerCrop()
 //                .placeholder(R.drawable.blank_white)
 //                .crossFade()
@@ -77,6 +81,7 @@ public class GoogleEventsRecyclerView extends android.support.v7.widget.Recycler
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.recyclerview_custom_layout, parent, false);
         RecyclerViewHolder vh = new RecyclerViewHolder(view);
+        color = ContextCompat.getColor(parent.getContext(), R.color.colorPrimary);
         return vh;
     }
 

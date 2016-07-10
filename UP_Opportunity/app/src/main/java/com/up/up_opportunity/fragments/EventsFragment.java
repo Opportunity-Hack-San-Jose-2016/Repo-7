@@ -163,10 +163,10 @@ public class EventsFragment extends android.support.v4.app.Fragment {
                     String name = googleEvent.getResults().get(0).getName();
                     String vicinity = googleEvent.getResults().get(0).getVicinity();
                     int size = googleEvent.getResults().size();
-                    Log.d(TAG, "Event Name: " + name);
-                    Log.d(TAG, "Event Name: " + vicinity);
-                    Log.d(TAG, "Event Name: " + lat);
-                    Log.d(TAG, "Size: " + size);
+//                    Log.d(TAG, "Event Name: " + name);
+//                    Log.d(TAG, "Event Name: " + vicinity);
+//                    Log.d(TAG, "Event Name: " + lat);
+//                    Log.d(TAG, "Size: " + size);
                     recyclerViewAdapter = new GoogleEventsRecyclerView(googleEvent);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                     recyclerView.setAdapter(recyclerViewAdapter);
