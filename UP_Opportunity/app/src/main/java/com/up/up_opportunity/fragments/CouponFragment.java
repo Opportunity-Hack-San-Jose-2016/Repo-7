@@ -45,7 +45,7 @@ public class CouponFragment extends Fragment {
     private String couponHTTP = "http://api.8coupons.com/v1/";
     private int zipCode = 95131;
     private int mileRadius = 20;
-    private int limit = 10;
+    private int limit = 50;
     private String orderBy = "radius";
     private String category = "2,6";
 
