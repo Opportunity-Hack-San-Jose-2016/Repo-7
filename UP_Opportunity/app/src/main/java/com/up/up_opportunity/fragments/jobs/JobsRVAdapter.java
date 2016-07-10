@@ -75,7 +75,7 @@ public class JobsRVAdapter extends RecyclerView.Adapter<JobsRVAdapter.JobsViewHo
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_jobs, parent, false);
         JobsViewHolder jobsViewHolder = new JobsViewHolder(view);
 
-        color = ContextCompat.getColor(parent.getContext(), R.color.colorAccent);
+        color = ContextCompat.getColor(parent.getContext(), R.color.colorAccentAlpha);
 
 
         return jobsViewHolder;
