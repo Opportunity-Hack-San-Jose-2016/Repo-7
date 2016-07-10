@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
 //        logo.setVisibility(View.GONE);
 //    }
 
-    private void bottomBarClickListener(BottomBar bottomBar){
+    private void bottomBarClickListener(final BottomBar bottomBar){
         bottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
             @Override
             public void onMenuTabSelected(@IdRes int menuItemId) {
@@ -218,4 +218,5 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
     public void onBackPressed() {
 //        super.onBackPressed();
     }
+    
 }
