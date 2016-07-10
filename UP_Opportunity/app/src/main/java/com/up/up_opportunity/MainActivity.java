@@ -101,13 +101,10 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
 
     }
 
-
 //    private void turnOffLogo(){
 //        logo.setVisibility(View.GONE);
 //    }
-
-
-
+    
     private void bottomBarClickListener(BottomBar bottomBar){
         bottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
             @Override
@@ -118,31 +115,26 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
                         // The user selected item number one.
                         fragmentTransaction.replace(R.id.frag_container_id,helpFragment);
                         fragmentTransaction.commit();
-                        Log.d(TAG, "HELP");
+                        toolbar.setTitle("Help");
                         break;
                     case R.id.bottomBarItemTwo:
-
 //                        turnOffLogo();
-
                         fragmentTransaction.replace(R.id.frag_container_id,jobsFragment);
                         fragmentTransaction.commit();
-                        Log.d(TAG, "JOBS");
+                        toolbar.setTitle("Jobs");
                         break;
                     case R.id.bottomBarItemThree:
-
 //                        turnOffLogo();
-
                         fragmentTransaction.replace(R.id.frag_container_id,eventsFragment);
                         fragmentTransaction.commit();
-                        Log.d(TAG, "EVENTS");
+                        toolbar.setTitle("Events & Activities");
+
                         break;
                     case R.id.bottomBarItemFour:
-
 //                        turnOffLogo();
-
                         fragmentTransaction.replace(R.id.frag_container_id,couponFragment);
                         fragmentTransaction.commit();
-                        Log.d(TAG, "DISCOUNTS");
+                        toolbar.setTitle("Coupons & Discounts");
                         break;
                     default:
                         Log.d(TAG, "None");
@@ -190,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
         bottomBar.mapColorForTab(1, ContextCompat.getColor(this, R.color.colorPrimary));
         bottomBar.mapColorForTab(2, ContextCompat.getColor(this, R.color.colorPrimary));
         bottomBar.mapColorForTab(3, ContextCompat.getColor(this, R.color.colorPrimary));
+
     }
 
     @Override
