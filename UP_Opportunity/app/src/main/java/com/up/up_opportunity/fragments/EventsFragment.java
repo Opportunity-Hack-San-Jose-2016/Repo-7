@@ -3,8 +3,10 @@ package com.up.up_opportunity.fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,6 +49,7 @@ public class EventsFragment extends android.support.v4.app.Fragment {
     GoogleEventsRecyclerView recyclerViewAdapter;
     private GoogleEvent googleEvent;
     SharedPreferences sharedPreferences;
+    private SwipeRefreshLayout eventSwipeRefreshLayout;
 
     @Nullable
     @Override
@@ -54,6 +57,8 @@ public class EventsFragment extends android.support.v4.app.Fragment {
         View v = inflater.inflate(R.layout.fragment_events, container, false);
         setRetainInstance(true);
         recyclerView = (RecyclerView) v.findViewById(R.id.list_recyclerView_event);
+        eventSwipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.event_swipeRefreshLayout);
+        eventSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryLight, R.color.colorAccent, R.color.colorPrimary);
 
         sharedPreferences = getActivity().getSharedPreferences("EVENTS", Context.MODE_PRIVATE);
 
@@ -69,25 +74,49 @@ public class EventsFragment extends android.support.v4.app.Fragment {
             eventApiCall();
         }
 
+        swipeEventRefreshListener();
 
         return v;
     }
+
+    private void swipeEventRefreshListener(){
+        eventSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshEventsContent();
+            }
+        });
+    }
+
+    /**
+     * Pull down to refresh will make new API call
+     */
+    private void refreshEventsContent(){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                eventApiCall();
+                eventSwipeRefreshLayout.setRefreshing(false);
+            }
+        }, 0);
+    }
+
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "onViewCreated: ");
 
-        submitButton = (Button)view.findViewById(R.id.eventButton);
-        submitButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-            eventApiCall();
-
-
-            }
-        });
+//        submitButton = (Button)view.findViewById(R.id.eventButton);
+//        submitButton.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View view) {
+//            eventApiCall();
+//
+//
+//            }
+//        });
 
     }
 
