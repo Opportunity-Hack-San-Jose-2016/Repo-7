@@ -1,5 +1,6 @@
 package com.up.up_opportunity;
 
+import android.graphics.Color;
 import android.support.annotation.IdRes;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -11,7 +12,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 import com.up.up_opportunity.fragments.CouponFragment;
@@ -27,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private BottomBar bottomBar;
     private Toolbar toolbar;
     private ImageView logo;
     private ActionBar actionBar;
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
     private EventsFragment eventsFragment;
     private CouponFragment couponFragment;
     private FragmentTransaction fragmentTransaction;
+    private AHBottomNavigation bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +48,11 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
 
         initViews();
         initActionBar();
-        bottomBar = bottomBar.attach(this, savedInstanceState);
-        bottomBar.setItems(R.menu.bottombar_menu);
         initializeFragments();
         initFragManager();
-        openLogoFrag();
-        bottomBarClickListener(bottomBar);
-
+        openHelpFrag();
+        //bottomBarClickListener(bottomBar);
+        bottomNavi();
     }
 
 
@@ -58,12 +60,11 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        bottomBar.onSaveInstanceState(outState);
     }
 
     private void initViews(){
         toolbar = (Toolbar)findViewById(R.id.home_toolBar);
+        bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
 
 //        logo = (ImageView)findViewById(R.id.logo_id);
 
@@ -71,8 +72,8 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
 
     private void initActionBar(){
         setSupportActionBar(toolbar);
-        actionBar = getSupportActionBar();
-        actionBar.setTitle(TAG);
+//        actionBar = getSupportActionBar();
+//        actionBar.setTitle(TAG);
     }
 
     private void initFragManager(){
@@ -80,9 +81,9 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
         fragmentTransaction = fragmentManager.beginTransaction();
     }
 
-    private void openLogoFrag(){
-        LogoFragment logoFragment = new LogoFragment();
-        fragmentTransaction.add(R.id.frag_container_id,logoFragment);
+    private void openHelpFrag(){
+        HelpFragment helpFragment = new HelpFragment();
+        fragmentTransaction.add(R.id.frag_container_id, helpFragment);
         fragmentTransaction.commit();
     }
 
@@ -104,91 +105,6 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
 //        logo.setVisibility(View.GONE);
 //    }
 
-    private void bottomBarClickListener(final BottomBar bottomBar){
-        bottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
-            @Override
-            public void onMenuTabSelected(@IdRes int menuItemId) {
-                initFragManager();
-                switch(menuItemId){
-                    case R.id.bottomBarItemOne:
-                        // The user selected item number one.
-                        fragmentTransaction.replace(R.id.frag_container_id,helpFragment);
-                        fragmentTransaction.commit();
-                        toolbar.setTitle("Help");
-                        toolbar.setTitleTextColor(ContextCompat.getColor(MainActivity.this, R.color.white));
-                        break;
-                    case R.id.bottomBarItemTwo:
-//                        turnOffLogo();
-                        fragmentTransaction.replace(R.id.frag_container_id,jobsFragment);
-                        fragmentTransaction.commit();
-                        toolbar.setTitle("Jobs");
-                        toolbar.setTitleTextColor(ContextCompat.getColor(MainActivity.this, R.color.white));
-
-                        break;
-                    case R.id.bottomBarItemThree:
-//                        turnOffLogo();
-                        fragmentTransaction.replace(R.id.frag_container_id,eventsFragment);
-                        fragmentTransaction.commit();
-                        toolbar.setTitle("Events & Activities");
-                        toolbar.setTitleTextColor(ContextCompat.getColor(MainActivity.this, R.color.white));
-
-                        break;
-                    case R.id.bottomBarItemFour:
-//                        turnOffLogo();
-                        fragmentTransaction.replace(R.id.frag_container_id,couponFragment);
-                        fragmentTransaction.commit();
-                        toolbar.setTitle("Coupons & Discounts");
-                        toolbar.setTitleTextColor(ContextCompat.getColor(MainActivity.this, R.color.white));
-
-                        break;
-                    default:
-                        Log.d(TAG, "None");
-                        break;
-                }
-            }
-
-            @Override
-            public void onMenuTabReSelected(@IdRes int menuItemId) {
-                initFragManager();
-                switch(menuItemId){
-                    case R.id.bottomBarItemOne:
-                        // The user reselected item number one, scroll your content to top.
-                        fragmentTransaction.replace(R.id.frag_container_id,helpFragment);
-                        fragmentTransaction.commit();
-                        Log.d(TAG, "HELP");
-                        break;
-                    case R.id.bottomBarItemTwo:
-                        fragmentTransaction.replace(R.id.frag_container_id,jobsFragment);
-                        fragmentTransaction.commit();
-                        Log.d(TAG, "JOBS");
-                        break;
-                    case R.id.bottomBarItemThree:
-                        fragmentTransaction.replace(R.id.frag_container_id,eventsFragment);
-                        fragmentTransaction.commit();
-                        Log.d(TAG, "EVENTS");
-                        break;
-                    case R.id.bottomBarItemFour:
-                        fragmentTransaction.replace(R.id.frag_container_id,couponFragment);
-                        fragmentTransaction.commit();
-                        Log.d(TAG, "DISCOUNTS");
-                        break;
-                    default:
-                        Log.d(TAG, "None");
-                        break;
-                }
-            }
-
-        });
-
-        // Setting colors for different tabs when there's more than three of them.
-        // You can set colors for tabs in three different ways as shown below.
-
-        bottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorPrimary));
-        bottomBar.mapColorForTab(1, ContextCompat.getColor(this, R.color.colorPrimary));
-        bottomBar.mapColorForTab(2, ContextCompat.getColor(this, R.color.colorPrimary));
-        bottomBar.mapColorForTab(3, ContextCompat.getColor(this, R.color.colorPrimary));
-
-    }
 
     @Override
     public void onFoodBankClicked() {
@@ -222,5 +138,63 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
     public void onBackPressed() {
 //        super.onBackPressed();
     }
-    
+
+
+    private void bottomNavi(){
+        setupBottomNavi();
+        // Set listener
+        bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
+            @Override
+            public boolean onTabSelected(int position, boolean wasSelected) {
+                initFragManager();
+                fragmentTransaction.addToBackStack(null);
+                if (position == 0) {
+                    fragmentTransaction.replace(R.id.frag_container_id, helpFragment);
+                    toolbar.setTitle("Help");
+                    toolbar.setTitleTextColor(ContextCompat.getColor(MainActivity.this, R.color.white));
+                }
+                if (position == 1) {
+                    fragmentTransaction.replace(R.id.frag_container_id, jobsFragment);
+                    toolbar.setTitle("Jobs");
+                    toolbar.setTitleTextColor(ContextCompat.getColor(MainActivity.this, R.color.white));
+                }
+                if (position == 2) {
+                    fragmentTransaction.replace(R.id.frag_container_id, eventsFragment);
+                    toolbar.setTitle("Events & Activities");
+                    toolbar.setTitleTextColor(ContextCompat.getColor(MainActivity.this, R.color.white));
+                }
+                if (position == 3) {
+                    fragmentTransaction.replace(R.id.frag_container_id, couponFragment);
+                    toolbar.setTitle("Coupons & Discounts");
+                    toolbar.setTitleTextColor(ContextCompat.getColor(MainActivity.this, R.color.white));
+                }
+                fragmentTransaction.commit();
+                return true;
+            }
+        });
+    }
+
+
+    private void setupBottomNavi(){
+        AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.tab_1, R.drawable.ic_local_hospital_black_24dp, R.color.colorPrimary);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem(R.string.tab_2, R.drawable.ic_card_travel_black_24dp, R.color.colorPrimary);
+        AHBottomNavigationItem item3 = new AHBottomNavigationItem(R.string.tab_3, R.drawable.ic_map_black_24dp, R.color.colorPrimary);
+        AHBottomNavigationItem item4 = new AHBottomNavigationItem(R.string.tab_4, R.drawable.ic_local_atm_black_24dp, R.color.colorPrimary);
+        bottomNavigation.addItem(item1);
+        bottomNavigation.addItem(item2);
+        bottomNavigation.addItem(item3);
+        bottomNavigation.addItem(item4);
+
+        bottomNavigation.setBehaviorTranslationEnabled(false);
+        bottomNavigation.setForceTint(true);
+        bottomNavigation.setForceTitlesDisplay(true);
+        bottomNavigation.setColored(true);
+
+        int colorAccent = ContextCompat.getColor(MainActivity.this, R.color.colorAccent);
+        int colorWhite = ContextCompat.getColor(MainActivity.this, R.color.white);
+        // Change colors
+        bottomNavigation.setAccentColor(colorAccent);
+        bottomNavigation.setInactiveColor(colorWhite);
+    }
+
 }

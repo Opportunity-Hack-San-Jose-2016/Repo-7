@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">"UP_Opportunity "</string>
+
+    <string name="tab_1">Help</string>
+    <string name="tab_2">Jobs</string>
+    <string name="tab_3">Events</string>
+    <string name="tab_4">Coupons</string>
 </resources>
