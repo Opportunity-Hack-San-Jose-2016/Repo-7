@@ -24,14 +24,14 @@
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:text="Location: "/>
+                android:text="Zip Code: "/>
 
             <EditText
                 android:id="@+id/coupon_zip_editText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="95131"
-                android:hint="Zip Code"/>
+                android:hint="Zip"/>
 
         </LinearLayout>
 
