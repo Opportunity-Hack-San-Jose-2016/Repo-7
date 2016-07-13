@@ -14,9 +14,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
 import com.up.up_opportunity.JobWebViewActivity;
 import com.up.up_opportunity.R;
 import com.up.up_opportunity.fragments.jobs.JobsRVAdapter;
@@ -28,6 +31,7 @@ import com.up.up_opportunity.providers.CouponService;
 import com.up.up_opportunity.recycler.CouponsRecyclerAdapter;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -49,10 +53,13 @@ public class CouponFragment extends Fragment implements CouponsRecyclerAdapter.C
     private CouponService couponService;
     private CouponsRecyclerAdapter couponsRecyclerAdapter;
     private RecyclerView recyclerView;
+    private Button submitButton;
+    private EditText zipEditText;
+    private EditText milesEditText;
     private CouponsArray couponsList;
     private String couponHTTP = "http://api.8coupons.com/v1/";
-    private int zipCode = 95131;
-    private int mileRadius = 20;
+    private String zipCode = "95131";
+    private String mileRadius = "20";
     private int limit = 50;
     private String orderBy = "radius";
     private String category = "2,6";
@@ -68,10 +75,15 @@ public class CouponFragment extends Fragment implements CouponsRecyclerAdapter.C
         recyclerView = (RecyclerView) v.findViewById(R.id.coupon_recycler_id);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        submitButton = (Button) v.findViewById(R.id.coupon_fragment_submit_button);
+        zipEditText = (EditText) v.findViewById(R.id.coupon_zip_editText);
+        milesEditText = (EditText) v.findViewById(R.id.coupon_miles_editText);
+
         couponSwipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.coupon_swipeRefreshLayout);
         couponSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryLight, R.color.colorAccent, R.color.colorPrimary);
 
         sharedPreferences = getActivity().getSharedPreferences("COUPONS", Context.MODE_PRIVATE);
+
 
         Gson gson = new Gson();
         String json = sharedPreferences.getString("Coupons","");
@@ -79,11 +91,20 @@ public class CouponFragment extends Fragment implements CouponsRecyclerAdapter.C
             CouponsArray couponsData = gson.fromJson(json, CouponsArray.class);
             //jobRecyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            couponsRecyclerAdapter = new CouponsRecyclerAdapter(this, couponsData);
+            couponsRecyclerAdapter = new CouponsRecyclerAdapter(CouponFragment.this, couponsData);
             recyclerView.setAdapter(couponsRecyclerAdapter);
         }else{
             retrofit();
         }
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mileRadius = milesEditText.getText().toString();
+                zipCode = zipEditText.getText().toString();
+                retrofit();
+            }
+        });
 
         swipeCouponRefreshListener();
 
@@ -146,10 +167,12 @@ public class CouponFragment extends Fragment implements CouponsRecyclerAdapter.C
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 String parsedRespone = null;
                 try {
-                    parsedRespone = response.body().string().replace("[","{\"coupons\" : [").replace("]","]}");
+                    parsedRespone = response.body().string().replace("[{","{\"coupons\" : [{").replace("}]","}]}");
+                    Log.e(TAG, "ZIP: " + zipCode);
+
                     Gson gson = new Gson();
 
-                    CouponsArray couponsData = gson.fromJson(parsedRespone, CouponsArray.class);
+                    CouponsArray couponsData = gson.fromJson(parsedRespone.trim(), CouponsArray.class);
                     if (couponsData == null) {
                         return;
                     }
@@ -171,6 +194,7 @@ public class CouponFragment extends Fragment implements CouponsRecyclerAdapter.C
 
                         }
                 } catch (IOException e) {
+                    Log.e(TAG, "STACKTRACE");
                     e.printStackTrace();
                 }
             }

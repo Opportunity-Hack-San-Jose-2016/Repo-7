@@ -21,8 +21,8 @@ public interface CouponService {
 
     @GET("getdeals?")
     Call<ResponseBody> getCoupons(@Query("key") String key,
-                             @Query("zip") int zip,
-                             @Query("mileradius") int mile,
+                             @Query("zip") String zip,
+                             @Query("mileradius") String mile,
                              @Query("limit") int limit,
                              @Query("orderby") String radius,
                              @Query("categoryid") String category
