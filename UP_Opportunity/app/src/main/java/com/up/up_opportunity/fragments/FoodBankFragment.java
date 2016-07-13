@@ -140,6 +140,6 @@ public class FoodBankFragment extends Fragment implements FoodBankAdapter.FoodCl
         Intent intent = new Intent(getActivity(), JobWebViewActivity.class);
         intent.putExtra("link", link);
         startActivity(intent);
-        Log.d(TAG, "JobsFragment: Card Clicked: " + link);
+        //Log.d(TAG, "JobsFragment: Card Clicked: " + link);
     }
 }

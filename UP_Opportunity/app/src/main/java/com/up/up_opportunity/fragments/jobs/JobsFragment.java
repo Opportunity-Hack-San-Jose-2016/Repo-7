@@ -60,7 +60,7 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_jobs,container,false);
         setRetainInstance(true);
-        Log.d(TAG, "JobsFragment: OnCreateView");
+        //Log.d(TAG, "JobsFragment: OnCreateView");
 
         cityEditText = (EditText)view.findViewById(R.id.job_city_editText);
         jobTitleEditText = (EditText)view.findViewById(R.id.job_title_editText);
@@ -113,7 +113,7 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "onViewCreated: ");
+        //Log.i(TAG, "onViewCreated: ");
 
 
         submitButton = (Button)view.findViewById(R.id.job_fragment_submit_button);
@@ -161,7 +161,7 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
                 if(response.isSuccessful()){
                     indeed = response.body();
                     String title = indeed.getResults().get(0).getJobtitle();
-                    Log.d(TAG, "JOB TITLE: " + title);
+                    //Log.d(TAG, "JOB TITLE: " + title);
 
                     jobRecyclerView.setLayoutManager(linearLayoutManager);
                     jobsRVAdapter = new JobsRVAdapter(JobsFragment.this, indeed.getResults());
@@ -189,6 +189,6 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
         Intent intent = new Intent(getActivity(), JobWebViewActivity.class);
         intent.putExtra("link", link);
         startActivity(intent);
-        Log.d(TAG, "JobsFragment: Card Clicked: " + link);
+       // Log.d(TAG, "JobsFragment: Card Clicked: " + link);
     }
 }

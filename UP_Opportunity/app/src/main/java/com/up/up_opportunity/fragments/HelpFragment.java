@@ -39,7 +39,7 @@ public class HelpFragment extends android.support.v4.app.Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "onViewCreated: ");
+       // Log.i(TAG, "onViewCreated: ");
         setClickListeners();
     }
 
