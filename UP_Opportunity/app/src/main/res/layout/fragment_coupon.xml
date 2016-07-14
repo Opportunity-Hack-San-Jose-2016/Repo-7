@@ -24,12 +24,15 @@
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:text="Zip Code: "/>
+                android:text="Zip Code: "
+                android:clickable="true"
+                android:focusableInTouchMode="true"/>
 
             <EditText
                 android:id="@+id/coupon_zip_editText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:text="95131"
                 android:hint="Zip"/>
 
@@ -51,6 +54,7 @@
                 android:id="@+id/coupon_miles_editText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:text="20"
                 android:hint="Miles"/>
 

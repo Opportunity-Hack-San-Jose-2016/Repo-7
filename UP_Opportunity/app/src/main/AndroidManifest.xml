@@ -19,7 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".JobWebViewActivity" />
+        <activity android:name=".JobWebViewActivity"
+                    android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".AnswerActivity"></activity>
     </application>
 
