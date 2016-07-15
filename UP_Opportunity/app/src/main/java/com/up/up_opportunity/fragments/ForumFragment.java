@@ -19,6 +19,8 @@ import com.up.up_opportunity.AnswerActivity;
 import com.up.up_opportunity.MainActivity;
 import com.up.up_opportunity.R;
 import com.up.up_opportunity.model.forum.Question;
+import com.up.up_opportunity.recycler.RecyclerClickListener;
+import com.up.up_opportunity.recycler.RecyclerViewListener;
 import com.up.up_opportunity.view_holders.QuestionViewHolder;
 
 import java.text.SimpleDateFormat;
@@ -121,6 +123,19 @@ public class ForumFragment extends Fragment implements QuestionViewHolder.OnQues
         Intent answerIntent = new Intent(getActivity(), AnswerActivity.class);
         answerIntent.putExtra("ANSWER_KEY",question.getQuestion().replace(".","").replace("#","").replace("$","").replace("[","").replace("]",""));
 //        startActivity(answerIntent);
+    }
+    private void setClicker(){
+       questionsRV.addOnItemTouchListener(new RecyclerViewListener(getContext(), questionsRV, new RecyclerClickListener() {
+           @Override
+           public void onClick(View view, int position) {
+
+           }
+
+           @Override
+           public void onLongClick(View view, int position) {
+
+           }
+       }));
     }
 
 }
