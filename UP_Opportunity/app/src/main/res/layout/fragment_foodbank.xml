@@ -19,6 +19,7 @@
             android:id="@+id/foodbank_location_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:text="San Jose"
             android:hint="City"/>
 
