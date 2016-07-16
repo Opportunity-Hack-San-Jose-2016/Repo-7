@@ -113,9 +113,12 @@ public class ForumFragment extends Fragment implements QuestionViewHolder.OnQues
 
     private void setQuestionRV(){
         makeQuestionAdapter();
-        questionsRV.setAdapter(questionAdapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        questionsRV.setLayoutManager(layoutManager);
+        if(questionsRV != null){
+            questionsRV.setAdapter(questionAdapter);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+            questionsRV.setLayoutManager(layoutManager);
+        }
+
     }
 
     @Override
