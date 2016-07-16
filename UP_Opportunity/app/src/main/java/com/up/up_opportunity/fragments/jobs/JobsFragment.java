@@ -163,9 +163,12 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
                     String title = indeed.getResults().get(0).getJobtitle();
                     //Log.d(TAG, "JOB TITLE: " + title);
 
-                    jobRecyclerView.setLayoutManager(linearLayoutManager);
-                    jobsRVAdapter = new JobsRVAdapter(JobsFragment.this, indeed.getResults());
-                    jobRecyclerView.setAdapter(jobsRVAdapter);
+                    if(jobRecyclerView != null){
+                        jobRecyclerView.setLayoutManager(linearLayoutManager);
+                        jobsRVAdapter = new JobsRVAdapter(JobsFragment.this, indeed.getResults());
+                        jobRecyclerView.setAdapter(jobsRVAdapter);
+                    }
+
 
                     SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
                     Gson gson = new Gson();

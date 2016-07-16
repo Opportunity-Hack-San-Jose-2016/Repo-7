@@ -151,10 +151,12 @@ public class HousingFragment extends android.support.v4.app.Fragment implements 
                     Gson gson = new Gson();
                     HousingHUD housingHUD = gson.fromJson(parsedRespone, HousingHUD.class);
 
+                    if(housingRecyclerView != null){
+                        housingRecyclerView.setLayoutManager(linearLayoutManager);
+                        housingRVAdapter = new HousingRVAdapter(HousingFragment.this, housingHUD);
+                        housingRecyclerView.setAdapter(housingRVAdapter);
+                    }
 
-                    housingRecyclerView.setLayoutManager(linearLayoutManager);
-                    housingRVAdapter = new HousingRVAdapter(HousingFragment.this, housingHUD);
-                    housingRecyclerView.setAdapter(housingRVAdapter);
 
                     SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
                     Gson gsonHousing = new Gson();

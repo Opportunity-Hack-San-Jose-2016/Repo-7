@@ -167,9 +167,12 @@ public class EventsFragment extends android.support.v4.app.Fragment {
 //                    Log.d(TAG, "Event Name: " + vicinity);
 //                    Log.d(TAG, "Event Name: " + lat);
 //                    Log.d(TAG, "Size: " + size);
-                    recyclerViewAdapter = new GoogleEventsRecyclerView(googleEvent);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                    recyclerView.setAdapter(recyclerViewAdapter);
+                    if(recyclerView != null){
+                        recyclerViewAdapter = new GoogleEventsRecyclerView(googleEvent);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                        recyclerView.setAdapter(recyclerViewAdapter);
+                    }
+
 
                     SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
                     Gson gson = new Gson();

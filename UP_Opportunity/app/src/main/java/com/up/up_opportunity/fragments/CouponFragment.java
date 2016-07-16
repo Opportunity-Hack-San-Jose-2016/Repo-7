@@ -180,9 +180,12 @@ public class CouponFragment extends Fragment implements CouponsRecyclerAdapter.C
                         return;
                     }
 
-                    couponsRecyclerAdapter = new CouponsRecyclerAdapter(CouponFragment.this, couponsData);
-                    recyclerView.setAdapter(couponsRecyclerAdapter);
-                    couponsRecyclerAdapter.notifyDataSetChanged();
+                    if(recyclerView != null){
+                        couponsRecyclerAdapter = new CouponsRecyclerAdapter(CouponFragment.this, couponsData);
+                        recyclerView.setAdapter(couponsRecyclerAdapter);
+                        couponsRecyclerAdapter.notifyDataSetChanged();
+                    }
+
                     //Collections.addAll(couponsList, couponsData);
     //                Log.i(TAG, " "+ couponsList);
 

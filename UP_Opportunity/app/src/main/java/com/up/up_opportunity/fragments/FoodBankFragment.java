@@ -105,8 +105,11 @@ public class FoodBankFragment extends Fragment implements FoodBankAdapter.FoodCl
         foodBanks= new ArrayList<>();
         foodBankAdapter = new FoodBankAdapter(FoodBankFragment.this, foodBanks);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        foodBankRV.setLayoutManager(layoutManager);
-        foodBankRV.setAdapter(foodBankAdapter);
+        if(foodBankRV != null){
+            foodBankRV.setLayoutManager(layoutManager);
+            foodBankRV.setAdapter(foodBankAdapter);
+        }
+
     }
 
     private void manageYelpApi(){
