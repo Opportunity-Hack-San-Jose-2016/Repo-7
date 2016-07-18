@@ -21,10 +21,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.up.up_opportunity.JobWebViewActivity;
 import com.up.up_opportunity.R;
+import com.up.up_opportunity.UpApplication;
 import com.up.up_opportunity.model.job.Indeed;
 import com.up.up_opportunity.providers.IndeedService;
 
 import java.io.IOException;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
@@ -55,6 +59,8 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
     private JobsRVAdapter jobsRVAdapter;
     SharedPreferences sharedPreferences;
 
+    @Inject @Named("Jobs")Retrofit retrofit;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,6 +77,8 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
         sharedPreferences = getActivity().getSharedPreferences("JOBS", Context.MODE_PRIVATE);
 
         jobsSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryLight, R.color.colorAccent, R.color.colorPrimary);
+
+        ((UpApplication)getActivity().getApplication()).getNetComponent().inject(this);
 
         Gson gson = new Gson();
         String json = sharedPreferences.getString("Indeed","");
@@ -127,22 +135,6 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
 
     private void jobsApiCall(){
 
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(logging)
-                .build();
-
-        GsonBuilder gsonBuilder = new GsonBuilder()
-                .setLenient();
-        Gson gson = gsonBuilder.create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://api.indeed.com/ads/")
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(okHttpClient)
-                .build();
-
         IndeedService service = retrofit.create(IndeedService.class);
 
         String apiKey = "7516191153543229";
@@ -160,7 +152,7 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
             public void onResponse(Call<Indeed> call, Response<Indeed> response) {
                 if(response.isSuccessful()){
                     indeed = response.body();
-                    String title = indeed.getResults().get(0).getJobtitle();
+                   // String title = indeed.getResults().get(0).getJobtitle();
                     //Log.d(TAG, "JOB TITLE: " + title);
 
                     if(jobRecyclerView != null){
