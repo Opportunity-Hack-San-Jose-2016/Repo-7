@@ -59,7 +59,15 @@ public class NetModule {
     }
 
 
-
+    @Provides @Named("Jobs") @Singleton
+    Retrofit provideJobsRetrofit(Gson gson, OkHttpClient okHttpClient){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://api.indeed.com/ads/")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(okHttpClient)
+                .build();
+        return retrofit;
+    }
 
 
 }
