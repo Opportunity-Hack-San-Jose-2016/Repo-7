@@ -39,32 +39,34 @@ public class FoodBankAdapter extends RecyclerView.Adapter<FoodBankAdapter.ViewHo
 
     @Override
     public FoodBankAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
+
         View view = inflater.inflate(R.layout.foodbank_item,parent,false);
         ViewHolder viewHolder = new ViewHolder(view);
-        Log.i(TAG, "onCreateViewHolder: ");
+
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(FoodBankAdapter.ViewHolder holder, int position) {
         Business foodBank = foodBanks.get(position);
+
+        final String url = foodBank.mobileUrl();
+        holder.bind(foodClickListener, url);
+
         holder.titleTV.setText(foodBank.name());
-        Log.i(TAG, "onBindViewHolder: NAME " + foodBank.name());
         holder.numberTV.setText(foodBank.displayPhone());
         holder.addressTV.setText(foodBank.location().address().toString().substring(1,foodBank.location().address().toString().length()-1)
                 +", "+foodBank.location().city()+", "+foodBank.location().stateCode());
+
         if (foodBank.imageUrl()!=null) {
             Picasso.with(context)
                     .load(foodBank.imageUrl().replaceAll("ms", "ls"))
                     .into(holder.imageIV);
         }
-        final String url = foodBank.mobileUrl();
-        Log.d(TAG, "FoodBankAdapter URL: " + url);
-        holder.bind(foodClickListener, url);
-
-
+        
     }
 
     @Override
@@ -73,10 +75,12 @@ public class FoodBankAdapter extends RecyclerView.Adapter<FoodBankAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
+
         public TextView titleTV;
         public TextView numberTV;
         public TextView addressTV;
         public ImageView imageIV;
+
         public ViewHolder(View itemView) {
             super(itemView);
             titleTV = (TextView)itemView.findViewById(R.id.foodbank_item_name);
