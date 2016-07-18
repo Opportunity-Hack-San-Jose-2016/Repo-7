@@ -25,6 +25,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.up.up_opportunity.JobWebViewActivity;
 import com.up.up_opportunity.R;
+import com.up.up_opportunity.UpApplication;
 import com.up.up_opportunity.fragments.jobs.JobsRVAdapter;
 import com.up.up_opportunity.keys.keys;
 import com.up.up_opportunity.model.coupons.Coupons;
@@ -37,6 +38,9 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
@@ -69,7 +73,8 @@ public class CouponFragment extends Fragment implements CouponsRecyclerAdapter.C
     SharedPreferences sharedPreferences;
     private SwipeRefreshLayout couponSwipeRefreshLayout;
 
-    
+    @Inject @Named("Coupon") Retrofit retrofit;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -87,6 +92,7 @@ public class CouponFragment extends Fragment implements CouponsRecyclerAdapter.C
 
         sharedPreferences = getActivity().getSharedPreferences("COUPONS", Context.MODE_PRIVATE);
 
+        ((UpApplication)getActivity().getApplication()).getNetComponent().inject(this);
 
         Gson gson = new Gson();
         String json = sharedPreferences.getString("Coupons","");
@@ -146,20 +152,20 @@ public class CouponFragment extends Fragment implements CouponsRecyclerAdapter.C
 
     private void retrofit(){
 
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(logging)
-                .build();
-
-        GsonBuilder gsonBuilder = new GsonBuilder().setLenient();
-        Gson gson = gsonBuilder.create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(couponHTTP)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(okHttpClient)
-                .build();
+//        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+//        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
+//        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+//                .addInterceptor(logging)
+//                .build();
+//
+//        GsonBuilder gsonBuilder = new GsonBuilder().setLenient();
+//        Gson gson = gsonBuilder.create();
+//
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(couponHTTP)
+//                .addConverterFactory(GsonConverterFactory.create(gson))
+//                .client(okHttpClient)
+//                .build();
 
         // &zip=95131&mileradius=20&limit=50&orderby=radius&categoryid=2,6
 
