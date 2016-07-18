@@ -18,18 +18,31 @@ public class JobWebViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_web_view);
 
+        String link = getIntentWebLink();
+
+        initWebView(link);
+        createCustomWebView(link);
+
+    }
+
+    private String getIntentWebLink(){
         Intent intent = getIntent();
         String link = intent.getStringExtra("link");
+        return link;
+    }
 
-        Log.d(TAG, "WebView link: " + link);
-
+    private void initWebView(String link){
         webView = (WebView) findViewById(R.id.job_webView);
-        customWebViewClient = new CustomWebViewClient();
         webView.setWebViewClient(customWebViewClient);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(link);
+    }
+
+    private void createCustomWebView(String link){
+        customWebViewClient = new CustomWebViewClient();
         customWebViewClient.onLoadResource(webView, link);
     }
+
 
     private class CustomWebViewClient extends WebViewClient {
         @Override
