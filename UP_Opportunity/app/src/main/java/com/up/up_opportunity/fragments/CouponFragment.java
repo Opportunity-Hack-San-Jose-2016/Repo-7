@@ -151,22 +151,6 @@ public class CouponFragment extends Fragment implements CouponsRecyclerAdapter.C
     }
 
     private void retrofit(){
-
-//        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-//        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
-//        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-//                .addInterceptor(logging)
-//                .build();
-//
-//        GsonBuilder gsonBuilder = new GsonBuilder().setLenient();
-//        Gson gson = gsonBuilder.create();
-//
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl(couponHTTP)
-//                .addConverterFactory(GsonConverterFactory.create(gson))
-//                .client(okHttpClient)
-//                .build();
-
         // &zip=95131&mileradius=20&limit=50&orderby=radius&categoryid=2,6
 
         couponService = retrofit.create(CouponService.class);

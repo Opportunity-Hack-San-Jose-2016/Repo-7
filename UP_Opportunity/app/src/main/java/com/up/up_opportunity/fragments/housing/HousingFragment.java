@@ -21,10 +21,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.up.up_opportunity.JobWebViewActivity;
 import com.up.up_opportunity.R;
+import com.up.up_opportunity.UpApplication;
 import com.up.up_opportunity.model.housing.HousingHUD;
 import com.up.up_opportunity.providers.HousingService;
 
 import java.io.IOException;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
@@ -51,6 +55,8 @@ public class HousingFragment extends android.support.v4.app.Fragment implements 
     private HousingRVAdapter housingRVAdapter;
     SharedPreferences sharedPreferences;
 
+    @Inject @Named("Housing") Retrofit retrofit;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,6 +71,8 @@ public class HousingFragment extends android.support.v4.app.Fragment implements 
         sharedPreferences = getActivity().getSharedPreferences("HOUSING", Context.MODE_PRIVATE);
 
         housingSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryLight, R.color.colorAccent, R.color.colorPrimary);
+
+        ((UpApplication)getActivity().getApplication()).getNetComponent().inject(this);
 
         Gson gson = new Gson();
         String json = sharedPreferences.getString("HousingHUD","");
@@ -114,22 +122,6 @@ public class HousingFragment extends android.support.v4.app.Fragment implements 
     private void housingApiCall(){
 
         //Log.d(TAG, "HOUSING API CALL");
-
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(logging)
-                .build();
-
-        GsonBuilder gsonBuilder = new GsonBuilder()
-                .setLenient();
-        Gson gson = gsonBuilder.create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://data.hud.gov/Housing_Counselor/")
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(okHttpClient)
-                .build();
 
         HousingService service = retrofit.create(HousingService.class);
 
