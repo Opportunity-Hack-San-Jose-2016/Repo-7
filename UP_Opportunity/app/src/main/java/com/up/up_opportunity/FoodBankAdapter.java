@@ -2,18 +2,14 @@ package com.up.up_opportunity;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.yelp.clientlib.entities.Business;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -66,7 +62,7 @@ public class FoodBankAdapter extends RecyclerView.Adapter<FoodBankAdapter.ViewHo
                     .load(foodBank.imageUrl().replaceAll("ms", "ls"))
                     .into(holder.imageIV);
         }
-        
+
     }
 
     @Override
