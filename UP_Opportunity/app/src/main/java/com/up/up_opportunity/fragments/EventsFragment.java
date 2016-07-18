@@ -17,6 +17,7 @@ import android.widget.Button;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.up.up_opportunity.R;
+import com.up.up_opportunity.UpApplication;
 import com.up.up_opportunity.fragments.jobs.JobsRVAdapter;
 import com.up.up_opportunity.model.event.GoogleEvent;
 import com.up.up_opportunity.model.job.Indeed;
@@ -28,6 +29,9 @@ import com.yelp.clientlib.entities.Business;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -50,6 +54,7 @@ public class EventsFragment extends android.support.v4.app.Fragment {
     private GoogleEvent googleEvent;
     SharedPreferences sharedPreferences;
     private SwipeRefreshLayout eventSwipeRefreshLayout;
+    @Inject @Named("Events") Retrofit retrofit;
 
     @Nullable
     @Override
@@ -61,6 +66,8 @@ public class EventsFragment extends android.support.v4.app.Fragment {
         eventSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryLight, R.color.colorAccent, R.color.colorPrimary);
 
         sharedPreferences = getActivity().getSharedPreferences("EVENTS", Context.MODE_PRIVATE);
+
+        ((UpApplication)getActivity().getApplication()).getNetComponent().inject(this);
 
         Gson gson = new Gson();
         String json = sharedPreferences.getString("Event","");
@@ -122,21 +129,6 @@ public class EventsFragment extends android.support.v4.app.Fragment {
 
     private void eventApiCall(){
 
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(logging)
-                .build();
-
-        GsonBuilder gsonBuilder = new GsonBuilder()
-                .setLenient();
-        Gson gson = gsonBuilder.create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://maps.googleapis.com/maps/api/place/nearbysearch/")
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(okHttpClient)
-                .build();
 
         EventApi service = retrofit.create(EventApi.class);
 

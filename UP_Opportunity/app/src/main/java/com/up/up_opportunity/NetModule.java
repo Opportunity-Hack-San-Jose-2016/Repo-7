@@ -69,5 +69,15 @@ public class NetModule {
         return retrofit;
     }
 
+    @Provides @Named("Events") @Singleton
+    Retrofit provideEventsRetrofit(Gson gson, OkHttpClient okHttpClient){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://maps.googleapis.com/maps/api/place/nearbysearch/")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(okHttpClient)
+                .build();
+        return retrofit;
+    }
+
 
 }
