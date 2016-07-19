@@ -48,15 +48,22 @@ public class FoodBankFragment extends Fragment implements FoodBankAdapter.FoodCl
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_foodbank,container,false);
-        foodBankRV = (RecyclerView)view.findViewById(R.id.foodbank_RV);
-        locationET = (EditText)view.findViewById(R.id.foodbank_location_editText);
-        submitButton = (Button)view.findViewById(R.id.foodbank_submit_button);
-        foodbankSwipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.foodbank_swipeRefreshLayout);
-        foodbankSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryLight, R.color.colorAccent, R.color.colorPrimary);
 
+        initViews(view);
+        
         swipeFoodbankRefreshListener();
 
         return view;
+    }
+
+    private void initViews(View view){
+        foodBankRV = (RecyclerView)view.findViewById(R.id.foodbank_RV);
+        locationET = (EditText)view.findViewById(R.id.foodbank_location_editText);
+        submitButton = (Button)view.findViewById(R.id.foodbank_submit_button);
+
+        foodbankSwipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.foodbank_swipeRefreshLayout);
+        foodbankSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryLight, R.color.colorAccent, R.color.colorPrimary);
+
     }
 
     private void swipeFoodbankRefreshListener(){
