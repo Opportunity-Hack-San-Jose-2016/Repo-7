@@ -13,10 +13,7 @@ import android.widget.EditText;
 import com.firebase.client.Firebase;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 import com.up.up_opportunity.model.forum.Answer;
-import com.up.up_opportunity.model.forum.Question;
 import com.up.up_opportunity.view_holders.AnswerViewHolder;
-import com.up.up_opportunity.view_holders.QuestionViewHolder;
-import com.yelp.clientlib.entities.Business;
 
 public class AnswerActivity extends AppCompatActivity {
 
@@ -31,12 +28,18 @@ public class AnswerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answer);
+
+        initViews();
+        initFirebase();
+
+        setSubmitListener();
+        setAnswerRV();
+    }
+
+    private void initViews(){
         answerET = (EditText)findViewById(R.id.answer_ED_id);
         submitButton = (Button)findViewById(R.id.answer_submit_id);
         answerRV = (RecyclerView)findViewById(R.id.answer_RV);
-        initFirebase();
-        setSubmitListener();
-        setAnswerRV();
     }
 
     private String getStringIntent(){
@@ -62,7 +65,6 @@ public class AnswerActivity extends AppCompatActivity {
         questionFB.child("Answers").push().setValue(answer);
 
     }
-
 
     private void makeQuestionAdapter() {
         answerAdapter = new FirebaseRecyclerAdapter<Answer, AnswerViewHolder>(Answer.class, R.layout.answer_item,AnswerViewHolder.class,questionFB.child("Answers")) {

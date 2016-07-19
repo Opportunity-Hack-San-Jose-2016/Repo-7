@@ -53,7 +53,6 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
     private SwipeRefreshLayout jobsSwipeRefreshLayout;
     private Indeed indeed;
 
-
     private LinearLayoutManager linearLayoutManager;
     private GridLayoutManager gridLayoutManager;
     private JobsRVAdapter jobsRVAdapter;
@@ -66,33 +65,36 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_jobs,container,false);
         setRetainInstance(true);
-        //Log.d(TAG, "JobsFragment: OnCreateView");
 
-        cityEditText = (EditText)view.findViewById(R.id.job_city_editText);
-        jobTitleEditText = (EditText)view.findViewById(R.id.job_title_editText);
-        jobRecyclerView = (RecyclerView)view.findViewById(R.id.job_recyclerView);
-        jobsSwipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.job_swipeRefreshLayout);
-        linearLayoutManager = new LinearLayoutManager(getContext());
-        gridLayoutManager = new GridLayoutManager(getContext(), 2);
-        sharedPreferences = getActivity().getSharedPreferences("JOBS", Context.MODE_PRIVATE);
+        initViews(view);
+        setLayoutManger();
+        getSharedPreferences();
 
-        jobsSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryLight, R.color.colorAccent, R.color.colorPrimary);
+        injectDagger();
 
-        ((UpApplication)getActivity().getApplication()).getNetComponent().inject(this);
-
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString("Indeed","");
-        if(json != ""){
-            Indeed indeed = gson.fromJson(json, Indeed.class);
-            jobRecyclerView.setLayoutManager(linearLayoutManager);
-            //jobRecyclerView.setLayoutManager(gridLayoutManager);
-            jobsRVAdapter = new JobsRVAdapter(this, indeed.getResults());
-            jobRecyclerView.setAdapter(jobsRVAdapter);
-        }
+        displaySharedPreferences();
 
         swipeJobsRefreshListener();
 
         return view;
+    }
+
+    private void initViews(View view){
+        cityEditText = (EditText)view.findViewById(R.id.job_city_editText);
+        jobTitleEditText = (EditText)view.findViewById(R.id.job_title_editText);
+        jobRecyclerView = (RecyclerView)view.findViewById(R.id.job_recyclerView);
+        jobsSwipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.job_swipeRefreshLayout);
+
+        jobsSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryLight, R.color.colorAccent, R.color.colorPrimary);
+    }
+
+    private void setLayoutManger(){
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        gridLayoutManager = new GridLayoutManager(getContext(), 2);
+    }
+
+    private void getSharedPreferences(){
+        sharedPreferences = getActivity().getSharedPreferences("JOBS", Context.MODE_PRIVATE);
     }
 
     private void swipeJobsRefreshListener(){
@@ -102,6 +104,23 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
                 refreshJobsContent();
             }
         });
+    }
+
+    private void injectDagger(){
+        ((UpApplication)getActivity().getApplication()).getNetComponent().inject(this);
+    }
+
+    private void displaySharedPreferences(){
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("Indeed","");
+
+        if(json != ""){
+            Indeed indeed = gson.fromJson(json, Indeed.class);
+            jobRecyclerView.setLayoutManager(linearLayoutManager);
+            //jobRecyclerView.setLayoutManager(gridLayoutManager);
+            jobsRVAdapter = new JobsRVAdapter(this, indeed.getResults());
+            jobRecyclerView.setAdapter(jobsRVAdapter);
+        }
     }
 
     /**
@@ -121,8 +140,6 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //Log.i(TAG, "onViewCreated: ");
-
 
         submitButton = (Button)view.findViewById(R.id.job_fragment_submit_button);
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -153,14 +170,12 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
                 if(response.isSuccessful()){
                     indeed = response.body();
                    // String title = indeed.getResults().get(0).getJobtitle();
-                    //Log.d(TAG, "JOB TITLE: " + title);
 
                     if(jobRecyclerView != null){
                         jobRecyclerView.setLayoutManager(linearLayoutManager);
                         jobsRVAdapter = new JobsRVAdapter(JobsFragment.this, indeed.getResults());
                         jobRecyclerView.setAdapter(jobsRVAdapter);
                     }
-
 
                     SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
                     Gson gson = new Gson();
@@ -178,12 +193,10 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
 
     }
 
-
     @Override
     public void onCardViewClick(String link) {
         Intent intent = new Intent(getActivity(), JobWebViewActivity.class);
         intent.putExtra("link", link);
         startActivity(intent);
-       // Log.d(TAG, "JobsFragment: Card Clicked: " + link);
     }
 }

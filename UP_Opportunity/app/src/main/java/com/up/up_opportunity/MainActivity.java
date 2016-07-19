@@ -1,7 +1,5 @@
 package com.up.up_opportunity;
 
-import android.graphics.Color;
-import android.support.annotation.IdRes;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -9,15 +7,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnMenuTabClickListener;
 import com.up.up_opportunity.fragments.CouponFragment;
 import com.up.up_opportunity.fragments.EventsFragment;
 import com.up.up_opportunity.fragments.FoodBankFragment;
@@ -25,15 +19,12 @@ import com.up.up_opportunity.fragments.ForumFragment;
 import com.up.up_opportunity.fragments.HelpFragment;
 import com.up.up_opportunity.fragments.jobs.JobsFragment;
 import com.up.up_opportunity.fragments.housing.HousingFragment;
-import com.up.up_opportunity.fragments.LogoFragment;
 
 public class MainActivity extends AppCompatActivity implements HelpFragment.OnForumClickListener, HelpFragment.OnHousingClickListener, HelpFragment.OnFoodBankClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private Toolbar toolbar;
-    private ImageView logo;
-    private ActionBar actionBar;
     private HelpFragment helpFragment;
     private JobsFragment jobsFragment;
     private EventsFragment eventsFragment;
@@ -51,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements HelpFragment.OnFo
         initializeFragments();
         initFragManager();
         openHelpFrag();
-        //bottomBarClickListener(bottomBar);
         bottomNavi();
     }
 

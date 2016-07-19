@@ -14,11 +14,6 @@ import retrofit2.http.Query;
  */
 public interface CouponService {
 
-
-
-    // http://api.8coupons.com/v1/getdeals?key=360910f6c6c64841cae140dcdfcc9962ffd260d33b7fdde1dddad5ea2cfee4fca6093d039948f5a86182c0c94baacba2
-    // &zip=95131&mileradius=20&limit=50&orderby=radius&categoryid=2,6
-
     @GET("getdeals?")
     Call<ResponseBody> getCoupons(@Query("key") String key,
                              @Query("zip") String zip,

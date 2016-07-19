@@ -13,15 +13,6 @@ import retrofit2.http.Query;
  */
 public interface HousingService {
 
-    // http://data.hud.gov/Housing_Counselor/
-    // searchByLocation?
-    // Lat=37.2970155&
-    // Long=-121.8174129&
-    // Distance=50&
-    // RowLimit=&
-    // Services=&
-    // Languages=
-
     @GET("searchByLocation?")
     Call<ResponseBody> getHousingAgencies(@Query("Lat") String latitude,
                                           @Query("Long") String longitude,

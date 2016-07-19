@@ -18,6 +18,7 @@ import java.util.List;
  * Created by samsiu on 7/9/16.
  */
 public class JobsRVAdapter extends RecyclerView.Adapter<JobsRVAdapter.JobsViewHolder> {
+
     private static final String TAG = JobsRVAdapter.class.getSimpleName();
 
     int color;
@@ -27,7 +28,6 @@ public class JobsRVAdapter extends RecyclerView.Adapter<JobsRVAdapter.JobsViewHo
     public interface JobClickListener{
         void onCardViewClick(String link);
     }
-
 
     public static class JobsViewHolder extends RecyclerView.ViewHolder{
 
@@ -76,7 +76,6 @@ public class JobsRVAdapter extends RecyclerView.Adapter<JobsRVAdapter.JobsViewHo
         JobsViewHolder jobsViewHolder = new JobsViewHolder(view);
 
         color = ContextCompat.getColor(parent.getContext(), R.color.colorAccentAlpha);
-
 
         return jobsViewHolder;
     }
