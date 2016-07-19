@@ -10,7 +10,7 @@ import retrofit2.http.Query;
  * Created by samsiu on 7/9/16.
  */
 public interface IndeedService {
-    
+
     @GET("apisearch?")
     Call<Indeed> getIndeedJobs(@Query("publisher") String apiKey,
                            @Query("q") String query,
