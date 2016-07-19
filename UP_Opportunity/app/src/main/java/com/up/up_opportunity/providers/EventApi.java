@@ -12,12 +12,6 @@ import retrofit2.http.Query;
  */
 public interface EventApi {
 
-    //https://maps.googleapis.com/maps/api/place/nearbysearch/json?
-    // location=37.3382,-121.8863&
-    // radius=500&
-    // name=events&
-    // key=AIzaSyA0ls9fcQ0Gnec7lTuV5xmLci3nrOQcePI
-
     @GET("json?")
     Call<GoogleEvent> getGoogleEvents(@Query("location") String latLong,
                                     @Query("radius") String radius,
