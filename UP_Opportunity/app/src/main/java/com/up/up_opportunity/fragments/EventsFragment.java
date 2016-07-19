@@ -5,41 +5,28 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.up.up_opportunity.R;
 import com.up.up_opportunity.UpApplication;
-import com.up.up_opportunity.fragments.jobs.JobsRVAdapter;
 import com.up.up_opportunity.model.event.GoogleEvent;
-import com.up.up_opportunity.model.job.Indeed;
 import com.up.up_opportunity.providers.EventApi;
-import com.up.up_opportunity.providers.IndeedService;
 import com.up.up_opportunity.recycler.GoogleEventsRecyclerView;
-import com.yelp.clientlib.entities.Business;
 
 import android.support.v7.widget.RecyclerView;
-
-import java.util.ArrayList;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Billy on 7/9/16.
@@ -48,7 +35,6 @@ public class EventsFragment extends android.support.v4.app.Fragment {
 
 
     private static final String TAG = "EVENTS_FRAGMENT";
-    Button submitButton;
     RecyclerView recyclerView;
     GoogleEventsRecyclerView recyclerViewAdapter;
     private GoogleEvent googleEvent;
@@ -59,18 +45,39 @@ public class EventsFragment extends android.support.v4.app.Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_events, container, false);
+        View view = inflater.inflate(R.layout.fragment_events, container, false);
         setRetainInstance(true);
-        recyclerView = (RecyclerView) v.findViewById(R.id.list_recyclerView_event);
-        eventSwipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.event_swipeRefreshLayout);
+
+        initViews(view);
+        getSharedPreferences();
+        injectDagger();
+
+        displaySharedPreferences();
+
+        swipeEventRefreshListener();
+
+        return view;
+    }
+
+    private void initViews(View view){
+        recyclerView = (RecyclerView) view.findViewById(R.id.list_recyclerView_event);
+        eventSwipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.event_swipeRefreshLayout);
         eventSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryLight, R.color.colorAccent, R.color.colorPrimary);
 
+    }
+
+    private void getSharedPreferences(){
         sharedPreferences = getActivity().getSharedPreferences("EVENTS", Context.MODE_PRIVATE);
+    }
 
+    private void injectDagger(){
         ((UpApplication)getActivity().getApplication()).getNetComponent().inject(this);
+    }
 
+    private void displaySharedPreferences(){
         Gson gson = new Gson();
         String json = sharedPreferences.getString("Event","");
+
         if(json != ""){
             GoogleEvent googleEvent = gson.fromJson(json, GoogleEvent.class);
 
@@ -80,10 +87,6 @@ public class EventsFragment extends android.support.v4.app.Fragment {
         }else{
             eventApiCall();
         }
-
-        swipeEventRefreshListener();
-
-        return v;
     }
 
     private void swipeEventRefreshListener(){
