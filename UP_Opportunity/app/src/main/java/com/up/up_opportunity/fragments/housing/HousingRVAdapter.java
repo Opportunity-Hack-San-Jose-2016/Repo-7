@@ -3,22 +3,20 @@ package com.up.up_opportunity.fragments.housing;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.up.up_opportunity.R;
 import com.up.up_opportunity.model.housing.HousingHUD;
 
-import java.util.List;
 
 /**
  * Created by samsiu on 7/10/16.
  */
 public class HousingRVAdapter extends RecyclerView.Adapter<HousingRVAdapter.HousingViewHolder> {
+
     private static final String TAG = HousingRVAdapter.class.getSimpleName();
 
     int color;
@@ -71,11 +69,11 @@ public class HousingRVAdapter extends RecyclerView.Adapter<HousingRVAdapter.Hous
 
     @Override
     public HousingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_housing, parent, false);
         HousingViewHolder housingViewHolder = new HousingViewHolder(view);
 
         color = ContextCompat.getColor(parent.getContext(), R.color.colorPrimary);
-
 
         return housingViewHolder;
     }
@@ -89,7 +87,6 @@ public class HousingRVAdapter extends RecyclerView.Adapter<HousingRVAdapter.Hous
         holder.phoneTextView.setText(results.getHousing().get(position).getPhone1());
 
         final String url = results.getHousing().get(position).getWeburl();
-       // Log.i(TAG,"Clicked URL" + url);
         holder.bind(housingClickListener, url);
 
     }
