@@ -11,45 +11,31 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
 import com.up.up_opportunity.JobWebViewActivity;
 import com.up.up_opportunity.R;
 import com.up.up_opportunity.UpApplication;
-import com.up.up_opportunity.fragments.jobs.JobsRVAdapter;
 import com.up.up_opportunity.keys.keys;
-import com.up.up_opportunity.model.coupons.Coupons;
 import com.up.up_opportunity.model.coupons.CouponsArray;
-import com.up.up_opportunity.model.job.Indeed;
 import com.up.up_opportunity.providers.CouponService;
 import com.up.up_opportunity.recycler.CouponsRecyclerAdapter;
 
 import java.io.IOException;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Collections;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Billy on 7/9/16.
@@ -63,7 +49,6 @@ public class CouponFragment extends Fragment implements CouponsRecyclerAdapter.C
     private Button submitButton;
     private EditText zipEditText;
     private EditText milesEditText;
-    private CouponsArray couponsList;
     private String couponHTTP = "http://api.8coupons.com/v1/";
     private String zipCode = "95131";
     private String mileRadius = "20";
@@ -78,24 +63,50 @@ public class CouponFragment extends Fragment implements CouponsRecyclerAdapter.C
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_coupon, container, false);
+        View view = inflater.inflate(R.layout.fragment_coupon, container, false);
         setRetainInstance(true);
-        recyclerView = (RecyclerView) v.findViewById(R.id.coupon_recycler_id);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        submitButton = (Button) v.findViewById(R.id.coupon_fragment_submit_button);
-        zipEditText = (EditText) v.findViewById(R.id.coupon_zip_editText);
-        milesEditText = (EditText) v.findViewById(R.id.coupon_miles_editText);
+        initiViews(view);
+        setLayoutManager();
+        getSharedPreferences();
+        injectDagger();
 
-        couponSwipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.coupon_swipeRefreshLayout);
+        displaySharedPreferences();
+
+        setClickListener(submitButton);
+
+        swipeCouponRefreshListener();
+
+        return view;
+    }
+
+    private void initiViews(View view){
+        recyclerView = (RecyclerView) view.findViewById(R.id.coupon_recycler_id);
+        submitButton = (Button) view.findViewById(R.id.coupon_fragment_submit_button);
+        zipEditText = (EditText) view.findViewById(R.id.coupon_zip_editText);
+        milesEditText = (EditText) view.findViewById(R.id.coupon_miles_editText);
+
+        couponSwipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.coupon_swipeRefreshLayout);
         couponSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryLight, R.color.colorAccent, R.color.colorPrimary);
 
+    }
+
+    private void setLayoutManager(){
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+    private void getSharedPreferences(){
         sharedPreferences = getActivity().getSharedPreferences("COUPONS", Context.MODE_PRIVATE);
+    }
 
+    private void injectDagger(){
         ((UpApplication)getActivity().getApplication()).getNetComponent().inject(this);
+    }
 
+    private void displaySharedPreferences(){
         Gson gson = new Gson();
         String json = sharedPreferences.getString("Coupons","");
+
         if(json != ""){
             CouponsArray couponsData = gson.fromJson(json, CouponsArray.class);
             //jobRecyclerView.setLayoutManager(linearLayoutManager);
@@ -103,21 +114,19 @@ public class CouponFragment extends Fragment implements CouponsRecyclerAdapter.C
             couponsRecyclerAdapter = new CouponsRecyclerAdapter(CouponFragment.this, couponsData);
             recyclerView.setAdapter(couponsRecyclerAdapter);
         }else{
-            retrofit();
+            makeRetrofitCall();
         }
+    }
 
-        submitButton.setOnClickListener(new View.OnClickListener() {
+    private void setClickListener(Button button){
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mileRadius = milesEditText.getText().toString();
                 zipCode = zipEditText.getText().toString();
-                retrofit();
+                makeRetrofitCall();
             }
         });
-
-        swipeCouponRefreshListener();
-
-        return v;
     }
 
     private void swipeCouponRefreshListener(){
@@ -136,13 +145,11 @@ public class CouponFragment extends Fragment implements CouponsRecyclerAdapter.C
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                retrofit();
+                makeRetrofitCall();
                 couponSwipeRefreshLayout.setRefreshing(false);
             }
         }, 0);
     }
-
-
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -150,7 +157,7 @@ public class CouponFragment extends Fragment implements CouponsRecyclerAdapter.C
         Log.i(TAG, "onViewCreated: ");
     }
 
-    private void retrofit(){
+    private void makeRetrofitCall(){
         // &zip=95131&mileradius=20&limit=50&orderby=radius&categoryid=2,6
 
         couponService = retrofit.create(CouponService.class);

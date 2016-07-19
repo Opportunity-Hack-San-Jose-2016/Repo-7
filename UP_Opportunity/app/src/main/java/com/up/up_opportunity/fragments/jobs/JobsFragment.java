@@ -192,7 +192,7 @@ public class JobsFragment extends android.support.v4.app.Fragment implements Job
         });
 
     }
-    
+
     @Override
     public void onCardViewClick(String link) {
         Intent intent = new Intent(getActivity(), JobWebViewActivity.class);
