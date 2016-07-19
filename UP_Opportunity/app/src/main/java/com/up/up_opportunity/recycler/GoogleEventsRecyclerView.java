@@ -77,11 +77,14 @@ public class GoogleEventsRecyclerView extends android.support.v7.widget.Recycler
 
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
+
         View view = inflater.inflate(R.layout.recyclerview_custom_layout, parent, false);
         RecyclerViewHolder vh = new RecyclerViewHolder(view);
         color = ContextCompat.getColor(parent.getContext(), R.color.colorAccentAlpha);
+
         return vh;
     }
 

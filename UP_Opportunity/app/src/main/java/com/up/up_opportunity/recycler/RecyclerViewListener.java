@@ -16,6 +16,7 @@ public class RecyclerViewListener implements android.support.v7.widget.RecyclerV
 
     public RecyclerViewListener(Context context, final android.support.v7.widget.RecyclerView recyclerView, final RecyclerClickListener clickListener) {
         this.clickListener = clickListener;
+
         gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
@@ -35,14 +36,17 @@ public class RecyclerViewListener implements android.support.v7.widget.RecyclerV
     @Override
     public boolean onInterceptTouchEvent(android.support.v7.widget.RecyclerView rv, MotionEvent e) {
         View child = rv.findChildViewUnder(e.getX(), e.getY());
+
         if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
             clickListener.onClick(child, rv.getChildPosition(child));
         }
+
         return false;
     }
 
     @Override
     public void onTouchEvent(android.support.v7.widget.RecyclerView rv, MotionEvent e) {
+
     }
 
     @Override
