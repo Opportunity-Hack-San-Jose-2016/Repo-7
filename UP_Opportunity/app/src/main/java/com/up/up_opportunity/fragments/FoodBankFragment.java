@@ -50,7 +50,7 @@ public class FoodBankFragment extends Fragment implements FoodBankAdapter.FoodCl
         View view = inflater.inflate(R.layout.fragment_foodbank,container,false);
 
         initViews(view);
-        
+
         swipeFoodbankRefreshListener();
 
         return view;

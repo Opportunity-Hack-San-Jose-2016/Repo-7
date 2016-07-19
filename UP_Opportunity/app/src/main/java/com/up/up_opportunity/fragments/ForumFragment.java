@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import android.widget.EditText;
 import com.firebase.client.Firebase;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 import com.up.up_opportunity.AnswerActivity;
-import com.up.up_opportunity.MainActivity;
 import com.up.up_opportunity.R;
 import com.up.up_opportunity.model.forum.Question;
 import com.up.up_opportunity.recycler.RecyclerClickListener;
@@ -46,10 +44,16 @@ public class ForumFragment extends Fragment implements QuestionViewHolder.OnQues
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_forum, container, false);
+
+        initViews(view);
+
+        return view;
+    }
+
+    private void initViews(View view){
         questionET = (EditText) view.findViewById(R.id.forum_ED_id);
         submitButton = (Button) view.findViewById(R.id.forum_submit_id);
         questionsRV = (RecyclerView)view.findViewById(R.id.forum_RV_id);
-        return view;
     }
 
     @Override
