@@ -1,10 +1,8 @@
 package com.up.up_opportunity.fragments;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,10 +28,16 @@ public class HelpFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_help,container,false);
         setRetainInstance(true);
+
+        initViews(view);
+
+        return view;
+    }
+
+    private void initViews(View view){
         foodBankButton = (Button)view.findViewById(R.id.help_foodbank_button_id);
         forumButton = (Button)view.findViewById(R.id.help_forum_button_id);
         housingButton = (Button)view.findViewById(R.id.help_housing_id);
-        return view;
     }
 
     @Override
